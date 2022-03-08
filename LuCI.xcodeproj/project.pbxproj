@@ -1,0 +1,665 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		DA195FAE27D792B300CF27E2 /* LuCIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA195FAD27D792B300CF27E2 /* LuCIApp.swift */; };
+		DA195FB027D792B300CF27E2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA195FAF27D792B300CF27E2 /* ContentView.swift */; };
+		DA195FB227D792B500CF27E2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA195FB127D792B500CF27E2 /* Assets.xcassets */; };
+		DA195FB527D792B500CF27E2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA195FB427D792B500CF27E2 /* Preview Assets.xcassets */; };
+		DA195FB927D792B500CF27E2 /* LuCI WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = DA195FB827D792B500CF27E2 /* LuCI WatchKit App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		DA195FBE27D792B600CF27E2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA195FBD27D792B600CF27E2 /* Assets.xcassets */; };
+		DA195FC427D792B600CF27E2 /* LuCI WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = DA195FC327D792B600CF27E2 /* LuCI WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		DA195FC927D792B600CF27E2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA195FC827D792B600CF27E2 /* ContentView.swift */; };
+		DA195FCB27D792B600CF27E2 /* LuCIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA195FCA27D792B600CF27E2 /* LuCIApp.swift */; };
+		DA195FCD27D792B600CF27E2 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA195FCC27D792B600CF27E2 /* ComplicationController.swift */; };
+		DA195FCF27D792B700CF27E2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA195FCE27D792B700CF27E2 /* Assets.xcassets */; };
+		DA195FD227D792B700CF27E2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA195FD127D792B700CF27E2 /* Preview Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DA195FBA27D792B500CF27E2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA195FA227D792B300CF27E2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA195FB727D792B500CF27E2;
+			remoteInfo = "LuCI WatchKit App";
+		};
+		DA195FC527D792B600CF27E2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA195FA227D792B300CF27E2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA195FC227D792B600CF27E2;
+			remoteInfo = "LuCI WatchKit Extension";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		DA195FD927D792B700CF27E2 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				DA195FC427D792B600CF27E2 /* LuCI WatchKit Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA195FDD27D792B700CF27E2 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				DA195FB927D792B500CF27E2 /* LuCI WatchKit App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		DA195FAA27D792B300CF27E2 /* LuCI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LuCI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA195FAD27D792B300CF27E2 /* LuCIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuCIApp.swift; sourceTree = "<group>"; };
+		DA195FAF27D792B300CF27E2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		DA195FB127D792B500CF27E2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DA195FB427D792B500CF27E2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		DA195FB827D792B500CF27E2 /* LuCI WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LuCI WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA195FBD27D792B600CF27E2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DA195FC327D792B600CF27E2 /* LuCI WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "LuCI WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA195FC827D792B600CF27E2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		DA195FCA27D792B600CF27E2 /* LuCIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuCIApp.swift; sourceTree = "<group>"; };
+		DA195FCC27D792B600CF27E2 /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
+		DA195FCE27D792B700CF27E2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DA195FD127D792B700CF27E2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		DA195FD327D792B700CF27E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DA195FA727D792B300CF27E2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA195FC027D792B600CF27E2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DA195FA127D792B300CF27E2 = {
+			isa = PBXGroup;
+			children = (
+				DA195FAC27D792B300CF27E2 /* LuCI */,
+				DA195FBC27D792B500CF27E2 /* LuCI WatchKit App */,
+				DA195FC727D792B600CF27E2 /* LuCI WatchKit Extension */,
+				DA195FAB27D792B300CF27E2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DA195FAB27D792B300CF27E2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DA195FAA27D792B300CF27E2 /* LuCI.app */,
+				DA195FB827D792B500CF27E2 /* LuCI WatchKit App.app */,
+				DA195FC327D792B600CF27E2 /* LuCI WatchKit Extension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DA195FAC27D792B300CF27E2 /* LuCI */ = {
+			isa = PBXGroup;
+			children = (
+				DA195FAD27D792B300CF27E2 /* LuCIApp.swift */,
+				DA195FAF27D792B300CF27E2 /* ContentView.swift */,
+				DA195FB127D792B500CF27E2 /* Assets.xcassets */,
+				DA195FB327D792B500CF27E2 /* Preview Content */,
+			);
+			path = LuCI;
+			sourceTree = "<group>";
+		};
+		DA195FB327D792B500CF27E2 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				DA195FB427D792B500CF27E2 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		DA195FBC27D792B500CF27E2 /* LuCI WatchKit App */ = {
+			isa = PBXGroup;
+			children = (
+				DA195FBD27D792B600CF27E2 /* Assets.xcassets */,
+			);
+			path = "LuCI WatchKit App";
+			sourceTree = "<group>";
+		};
+		DA195FC727D792B600CF27E2 /* LuCI WatchKit Extension */ = {
+			isa = PBXGroup;
+			children = (
+				DA195FC827D792B600CF27E2 /* ContentView.swift */,
+				DA195FCA27D792B600CF27E2 /* LuCIApp.swift */,
+				DA195FCC27D792B600CF27E2 /* ComplicationController.swift */,
+				DA195FCE27D792B700CF27E2 /* Assets.xcassets */,
+				DA195FD327D792B700CF27E2 /* Info.plist */,
+				DA195FD027D792B700CF27E2 /* Preview Content */,
+			);
+			path = "LuCI WatchKit Extension";
+			sourceTree = "<group>";
+		};
+		DA195FD027D792B700CF27E2 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				DA195FD127D792B700CF27E2 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DA195FA927D792B300CF27E2 /* LuCI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA195FDE27D792B700CF27E2 /* Build configuration list for PBXNativeTarget "LuCI" */;
+			buildPhases = (
+				DA195FA627D792B300CF27E2 /* Sources */,
+				DA195FA727D792B300CF27E2 /* Frameworks */,
+				DA195FA827D792B300CF27E2 /* Resources */,
+				DA195FDD27D792B700CF27E2 /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DA195FBB27D792B500CF27E2 /* PBXTargetDependency */,
+			);
+			name = LuCI;
+			productName = LuCI;
+			productReference = DA195FAA27D792B300CF27E2 /* LuCI.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DA195FB727D792B500CF27E2 /* LuCI WatchKit App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA195FDA27D792B700CF27E2 /* Build configuration list for PBXNativeTarget "LuCI WatchKit App" */;
+			buildPhases = (
+				DA195FB627D792B500CF27E2 /* Resources */,
+				DA195FD927D792B700CF27E2 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DA195FC627D792B600CF27E2 /* PBXTargetDependency */,
+			);
+			name = "LuCI WatchKit App";
+			productName = "LuCI WatchKit App";
+			productReference = DA195FB827D792B500CF27E2 /* LuCI WatchKit App.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		DA195FC227D792B600CF27E2 /* LuCI WatchKit Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA195FD627D792B700CF27E2 /* Build configuration list for PBXNativeTarget "LuCI WatchKit Extension" */;
+			buildPhases = (
+				DA195FBF27D792B600CF27E2 /* Sources */,
+				DA195FC027D792B600CF27E2 /* Frameworks */,
+				DA195FC127D792B600CF27E2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "LuCI WatchKit Extension";
+			productName = "LuCI WatchKit Extension";
+			productReference = DA195FC327D792B600CF27E2 /* LuCI WatchKit Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DA195FA227D792B300CF27E2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1320;
+				LastUpgradeCheck = 1320;
+				TargetAttributes = {
+					DA195FA927D792B300CF27E2 = {
+						CreatedOnToolsVersion = 13.2.1;
+					};
+					DA195FB727D792B500CF27E2 = {
+						CreatedOnToolsVersion = 13.2.1;
+					};
+					DA195FC227D792B600CF27E2 = {
+						CreatedOnToolsVersion = 13.2.1;
+					};
+				};
+			};
+			buildConfigurationList = DA195FA527D792B300CF27E2 /* Build configuration list for PBXProject "LuCI" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = DA195FA127D792B300CF27E2;
+			productRefGroup = DA195FAB27D792B300CF27E2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DA195FA927D792B300CF27E2 /* LuCI */,
+				DA195FB727D792B500CF27E2 /* LuCI WatchKit App */,
+				DA195FC227D792B600CF27E2 /* LuCI WatchKit Extension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DA195FA827D792B300CF27E2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA195FB527D792B500CF27E2 /* Preview Assets.xcassets in Resources */,
+				DA195FB227D792B500CF27E2 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA195FB627D792B500CF27E2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA195FBE27D792B600CF27E2 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA195FC127D792B600CF27E2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA195FD227D792B700CF27E2 /* Preview Assets.xcassets in Resources */,
+				DA195FCF27D792B700CF27E2 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DA195FA627D792B300CF27E2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA195FB027D792B300CF27E2 /* ContentView.swift in Sources */,
+				DA195FAE27D792B300CF27E2 /* LuCIApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA195FBF27D792B600CF27E2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA195FCB27D792B600CF27E2 /* LuCIApp.swift in Sources */,
+				DA195FC927D792B600CF27E2 /* ContentView.swift in Sources */,
+				DA195FCD27D792B600CF27E2 /* ComplicationController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DA195FBB27D792B500CF27E2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA195FB727D792B500CF27E2 /* LuCI WatchKit App */;
+			targetProxy = DA195FBA27D792B500CF27E2 /* PBXContainerItemProxy */;
+		};
+		DA195FC627D792B600CF27E2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA195FC227D792B600CF27E2 /* LuCI WatchKit Extension */;
+			targetProxy = DA195FC527D792B600CF27E2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		DA195FD427D792B700CF27E2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		DA195FD527D792B700CF27E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		DA195FD727D792B700CF27E2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"LuCI WatchKit Extension/Preview Content\"";
+				DEVELOPMENT_TEAM = QR6NCKN8AB;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "LuCI WatchKit Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "LuCI WatchKit Extension";
+				INFOPLIST_KEY_CLKComplicationPrincipalClass = "$(PRODUCT_MODULE_NAME).ComplicationController";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cghtest.LuCI.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.3;
+			};
+			name = Debug;
+		};
+		DA195FD827D792B700CF27E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"LuCI WatchKit Extension/Preview Content\"";
+				DEVELOPMENT_TEAM = QR6NCKN8AB;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "LuCI WatchKit Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "LuCI WatchKit Extension";
+				INFOPLIST_KEY_CLKComplicationPrincipalClass = "$(PRODUCT_MODULE_NAME).ComplicationController";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cghtest.LuCI.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 8.3;
+			};
+			name = Release;
+		};
+		DA195FDB27D792B700CF27E2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QR6NCKN8AB;
+				GENERATE_INFOPLIST_FILE = YES;
+				IBSC_MODULE = LuCI_WatchKit_Extension;
+				INFOPLIST_KEY_CFBundleDisplayName = "LuCI WatchKit App";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.cghtest.LuCI;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cghtest.LuCI.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.3;
+			};
+			name = Debug;
+		};
+		DA195FDC27D792B700CF27E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QR6NCKN8AB;
+				GENERATE_INFOPLIST_FILE = YES;
+				IBSC_MODULE = LuCI_WatchKit_Extension;
+				INFOPLIST_KEY_CFBundleDisplayName = "LuCI WatchKit App";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.cghtest.LuCI;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cghtest.LuCI.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 8.3;
+			};
+			name = Release;
+		};
+		DA195FDF27D792B700CF27E2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"LuCI/Preview Content\"";
+				DEVELOPMENT_TEAM = QR6NCKN8AB;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cghtest.LuCI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		DA195FE027D792B700CF27E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"LuCI/Preview Content\"";
+				DEVELOPMENT_TEAM = QR6NCKN8AB;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cghtest.LuCI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DA195FA527D792B300CF27E2 /* Build configuration list for PBXProject "LuCI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA195FD427D792B700CF27E2 /* Debug */,
+				DA195FD527D792B700CF27E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DA195FD627D792B700CF27E2 /* Build configuration list for PBXNativeTarget "LuCI WatchKit Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA195FD727D792B700CF27E2 /* Debug */,
+				DA195FD827D792B700CF27E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DA195FDA27D792B700CF27E2 /* Build configuration list for PBXNativeTarget "LuCI WatchKit App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA195FDB27D792B700CF27E2 /* Debug */,
+				DA195FDC27D792B700CF27E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DA195FDE27D792B700CF27E2 /* Build configuration list for PBXNativeTarget "LuCI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA195FDF27D792B700CF27E2 /* Debug */,
+				DA195FE027D792B700CF27E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DA195FA227D792B300CF27E2 /* Project object */;
+}
