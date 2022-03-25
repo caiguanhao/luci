@@ -133,7 +133,7 @@
 		DA195FAC27D792B300CF27E2 /* LuCI */ = {
 			isa = PBXGroup;
 			children = (
-				DA15D63727D8E3AF002D3D58 /* API.swift */,
+				DA1E45D727EDFC5800053BC8 /* API */,
 				DABE425627E5CBDB00980CC6 /* LuCI.swift */,
 				DA195FAD27D792B300CF27E2 /* LuCIApp.swift */,
 				DA195FAF27D792B300CF27E2 /* ContentView.swift */,
@@ -179,6 +179,14 @@
 				DA195FD127D792B700CF27E2 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		DA1E45D727EDFC5800053BC8 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				DA15D63727D8E3AF002D3D58 /* API.swift */,
+			);
+			path = API;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
