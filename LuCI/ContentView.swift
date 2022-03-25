@@ -40,24 +40,39 @@ struct StatusView: View {
 
 struct MainView: View {
     @State var groups: [LuCI.StatusGroup]?
-    @AppStorage("host") private var host: String = SettingsView.DEFAULT_HOST
-    @AppStorage("user") private var user: String = SettingsView.DEFAULT_USER
-    @AppStorage("password") private var password: String = SettingsView.DEFAULT_PASS
+
+    func getStatus() async throws {
+        do {
+            self.groups = try await LuCI.shared.getStatus()
+        } catch {
+            self.groups = nil
+        }
+    }
+
+    var status: some View {
+        Group {
+            if groups == nil {
+                Text("(nothing here)").foregroundColor(.secondary)
+            } else {
+                StatusView(groups: groups!)
+            }
+        }
+    }
 
     var body: some View {
         NavigationView {
-            if (groups != nil) {
-                StatusView(groups: groups!)
-                    .navigationTitle("Status")
-            }
+            status
+                .navigationTitle("Status")
+                .refreshable {
+                    Task {
+                        try await getStatus()
+                    }
+                }
         }
         .navigationViewStyle(.stack)
         .onAppear {
-            let client = LuCI.init(host: host, user: user, pass: password)
             Task {
-                try await client.login()
-                self.groups = try await client.getStatus()
-                try await client.logout()
+                try await getStatus()
             }
         }
     }

@@ -28,6 +28,19 @@ class API {
         self.pass = pass
     }
 
+    func update(host: String, user: String, pass: String) async throws {
+        if self.host != host || self.user != user || self.pass != pass {
+            self.host = host
+            self.user = user
+            self.pass = pass
+            self.auth = nil
+            self.staticStatus = nil
+        }
+        if self.auth == nil {
+            try await login()
+        }
+    }
+
     func login() async throws {
         return try await withCheckedThrowingContinuation { continuation in
             let data: [String: String] = [
@@ -155,7 +168,7 @@ class API {
     private func newRequest(_ path: String, redirect: Bool = true) -> DataRequest {
         let url = "http://\(self.host)/cgi-bin/luci\(path)"
         let headers: [String: String] = [
-            "Cookie": "sysauth=\(self.auth!)",
+            "Cookie": "sysauth=\(self.auth ?? "")",
         ]
         let req = AF.request(url, method: .get, headers: HTTPHeaders(headers)) {
             $0.timeoutInterval = 3

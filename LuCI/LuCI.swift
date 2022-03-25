@@ -8,18 +8,33 @@
 import Foundation
 
 class LuCI {
+    static let DEFAULT_HOST = "192.168.2.1"
+    static let DEFAULT_USER = "root"
+    static let DEFAULT_PASS = "password"
+
+    static let STORAGE_HOST = "host"
+    static let STORAGE_USER = "user"
+    static let STORAGE_PASS = "pass"
+
+    static func HUP() -> (host: String, user: String, pass: String) {
+        let host: String = UserDefaults.standard.string(forKey: LuCI.STORAGE_HOST) ?? LuCI.DEFAULT_HOST
+        let user: String = UserDefaults.standard.string(forKey: LuCI.STORAGE_USER) ?? LuCI.DEFAULT_USER
+        let pass: String = UserDefaults.standard.string(forKey: LuCI.STORAGE_PASS) ?? LuCI.DEFAULT_PASS
+        return (host, user, pass)
+    }
+
+    static var shared = LuCI()
+
     private var api: API
 
-    init(host: String, user: String, pass: String) {
+    init() {
+        let (host, user, pass) = LuCI.HUP()
         self.api = API(host: host, user: user, pass: pass)
     }
 
-    func login() async throws {
-        try await api.login()
-    }
-
-    func logout() async throws {
-        try await api.logout()
+    func update() async throws {
+        let (host, user, pass) = LuCI.HUP()
+        try await api.update(host: host, user: user, pass: pass)
     }
 
     struct StatusGroup: Identifiable {
@@ -35,6 +50,7 @@ class LuCI {
     }
 
     func getStatus() async throws -> [StatusGroup] {
+        try await update()
         let staticStatus = try await api.getStaticStatus()
         let s = try await api.getStatus()
         return [

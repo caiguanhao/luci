@@ -21,6 +21,7 @@
 		DA195FCD27D792B600CF27E2 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA195FCC27D792B600CF27E2 /* ComplicationController.swift */; };
 		DA195FCF27D792B700CF27E2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA195FCE27D792B700CF27E2 /* Assets.xcassets */; };
 		DA195FD227D792B700CF27E2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA195FD127D792B700CF27E2 /* Preview Assets.xcassets */; };
+		DA1E45D627ECDB2A00053BC8 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = DA1E45D527ECDB2A00053BC8 /* Introspect */; };
 		DABE425527E57DB600980CC6 /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = DABE425427E57DB600980CC6 /* Fuzi */; };
 		DABE425727E5CBDB00980CC6 /* LuCI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DABE425627E5CBDB00980CC6 /* LuCI.swift */; };
 		DABE425927E5DDE600980CC6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DABE425827E5DDE600980CC6 /* SettingsView.swift */; };
@@ -94,6 +95,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DABE425527E57DB600980CC6 /* Fuzi in Frameworks */,
+				DA1E45D627ECDB2A00053BC8 /* Introspect in Frameworks */,
 				DA15D63627D8E342002D3D58 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -200,6 +202,7 @@
 			packageProductDependencies = (
 				DA15D63527D8E342002D3D58 /* Alamofire */,
 				DABE425427E57DB600980CC6 /* Fuzi */,
+				DA1E45D527ECDB2A00053BC8 /* Introspect */,
 			);
 			productName = LuCI;
 			productReference = DA195FAA27D792B300CF27E2 /* LuCI.app */;
@@ -272,6 +275,7 @@
 			packageReferences = (
 				DA15D63427D8E342002D3D58 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				DABE425327E57DB600980CC6 /* XCRemoteSwiftPackageReference "Fuzi" */,
+				DA1E45D427ECDB2A00053BC8 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 			);
 			productRefGroup = DA195FAB27D792B300CF27E2 /* Products */;
 			projectDirPath = "";
@@ -694,6 +698,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		DA1E45D427ECDB2A00053BC8 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.4;
+			};
+		};
 		DABE425327E57DB600980CC6 /* XCRemoteSwiftPackageReference "Fuzi" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/cezheng/Fuzi";
@@ -709,6 +721,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DA15D63427D8E342002D3D58 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		DA1E45D527ECDB2A00053BC8 /* Introspect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DA1E45D427ECDB2A00053BC8 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = Introspect;
 		};
 		DABE425427E57DB600980CC6 /* Fuzi */ = {
 			isa = XCSwiftPackageProductDependency;
