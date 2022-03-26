@@ -10,17 +10,24 @@ import Foundation
 import Fuzi
 
 class API {
-    enum APIError: Error {
-        case loginFailed
-        case requestFailed(code: Int, response: String)
-    }
-
     private var host: String
     private var user: String
     private var pass: String
 
     private var auth: String?
     private var staticStatus: StaticStatus?
+
+    private var manager: Session = {
+        let configuration: URLSessionConfiguration = {
+            let configuration = URLSessionConfiguration.default
+            configuration.headers = HTTPHeaders.default
+            configuration.httpCookieStorage = .none
+            configuration.requestCachePolicy = .reloadIgnoringLocalAndRemoteCacheData
+            configuration.urlCache = nil
+            return configuration
+        }()
+        return Session(configuration: configuration)
+    }()
 
     init(host: String, user: String, pass: String) {
         self.host = host
@@ -48,7 +55,7 @@ class API {
                 "luci_password": self.pass,
             ]
             let url = "http://\(self.host)/cgi-bin/luci/"
-            AF.request(url, method: .post, parameters: data) { $0.timeoutInterval = 3 }
+            manager.request(url, method: .post, parameters: data) { $0.timeoutInterval = 3 }
             .redirect(using: .doNotFollow)
             .response { resp in
                 if resp.error != nil {
@@ -65,7 +72,7 @@ class API {
                         return
                     }
                 }
-                continuation.resume(throwing: APIError.loginFailed)
+                continuation.resume(throwing: APIError.loginFailed(host: self.host, user: self.user, pass: self.pass))
             }
         }
     }
@@ -170,7 +177,7 @@ class API {
         let headers: [String: String] = [
             "Cookie": "sysauth=\(self.auth ?? "")",
         ]
-        let req = AF.request(url, method: .get, headers: HTTPHeaders(headers)) {
+        let req = manager.request(url, method: .get, headers: HTTPHeaders(headers)) {
             $0.timeoutInterval = 3
         }
         if (redirect == false) {

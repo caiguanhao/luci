@@ -22,6 +22,8 @@
 		DA195FCF27D792B700CF27E2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA195FCE27D792B700CF27E2 /* Assets.xcassets */; };
 		DA195FD227D792B700CF27E2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA195FD127D792B700CF27E2 /* Preview Assets.xcassets */; };
 		DA1E45D627ECDB2A00053BC8 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = DA1E45D527ECDB2A00053BC8 /* Introspect */; };
+		DA1E45E127EE25E200053BC8 /* LuCIAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1E45E027EE25E200053BC8 /* LuCIAPITests.swift */; };
+		DA8766D127EF43D7000C34C1 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8766D027EF43D7000C34C1 /* Error.swift */; };
 		DABE425527E57DB600980CC6 /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = DABE425427E57DB600980CC6 /* Fuzi */; };
 		DABE425727E5CBDB00980CC6 /* LuCI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DABE425627E5CBDB00980CC6 /* LuCI.swift */; };
 		DABE425927E5DDE600980CC6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DABE425827E5DDE600980CC6 /* SettingsView.swift */; };
@@ -41,6 +43,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = DA195FC227D792B600CF27E2;
 			remoteInfo = "LuCI WatchKit Extension";
+		};
+		DA1E45E227EE25E200053BC8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA195FA227D792B300CF27E2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA195FA927D792B300CF27E2;
+			remoteInfo = LuCI;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -85,6 +94,9 @@
 		DA195FCE27D792B700CF27E2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DA195FD127D792B700CF27E2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DA195FD327D792B700CF27E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DA1E45DE27EE25E200053BC8 /* LuCITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LuCITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA1E45E027EE25E200053BC8 /* LuCIAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuCIAPITests.swift; sourceTree = "<group>"; };
+		DA8766D027EF43D7000C34C1 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		DABE425627E5CBDB00980CC6 /* LuCI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuCI.swift; sourceTree = "<group>"; };
 		DABE425827E5DDE600980CC6 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -107,6 +119,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DA1E45DB27EE25E200053BC8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -116,6 +135,7 @@
 				DA195FAC27D792B300CF27E2 /* LuCI */,
 				DA195FBC27D792B500CF27E2 /* LuCI WatchKit App */,
 				DA195FC727D792B600CF27E2 /* LuCI WatchKit Extension */,
+				DA1E45DF27EE25E200053BC8 /* LuCITests */,
 				DA195FAB27D792B300CF27E2 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -126,6 +146,7 @@
 				DA195FAA27D792B300CF27E2 /* LuCI.app */,
 				DA195FB827D792B500CF27E2 /* LuCI WatchKit App.app */,
 				DA195FC327D792B600CF27E2 /* LuCI WatchKit Extension.appex */,
+				DA1E45DE27EE25E200053BC8 /* LuCITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -185,8 +206,17 @@
 			isa = PBXGroup;
 			children = (
 				DA15D63727D8E3AF002D3D58 /* API.swift */,
+				DA8766D027EF43D7000C34C1 /* Error.swift */,
 			);
 			path = API;
+			sourceTree = "<group>";
+		};
+		DA1E45DF27EE25E200053BC8 /* LuCITests */ = {
+			isa = PBXGroup;
+			children = (
+				DA1E45E027EE25E200053BC8 /* LuCIAPITests.swift */,
+			);
+			path = LuCITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -250,6 +280,24 @@
 			productReference = DA195FC327D792B600CF27E2 /* LuCI WatchKit Extension.appex */;
 			productType = "com.apple.product-type.watchkit2-extension";
 		};
+		DA1E45DD27EE25E200053BC8 /* LuCITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA1E45E427EE25E200053BC8 /* Build configuration list for PBXNativeTarget "LuCITests" */;
+			buildPhases = (
+				DA1E45DA27EE25E200053BC8 /* Sources */,
+				DA1E45DB27EE25E200053BC8 /* Frameworks */,
+				DA1E45DC27EE25E200053BC8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DA1E45E327EE25E200053BC8 /* PBXTargetDependency */,
+			);
+			name = LuCITests;
+			productName = LuCITests;
+			productReference = DA1E45DE27EE25E200053BC8 /* LuCITests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -268,6 +316,10 @@
 					};
 					DA195FC227D792B600CF27E2 = {
 						CreatedOnToolsVersion = 13.2.1;
+					};
+					DA1E45DD27EE25E200053BC8 = {
+						CreatedOnToolsVersion = 13.2.1;
+						TestTargetID = DA195FA927D792B300CF27E2;
 					};
 				};
 			};
@@ -292,6 +344,7 @@
 				DA195FA927D792B300CF27E2 /* LuCI */,
 				DA195FB727D792B500CF27E2 /* LuCI WatchKit App */,
 				DA195FC227D792B600CF27E2 /* LuCI WatchKit Extension */,
+				DA1E45DD27EE25E200053BC8 /* LuCITests */,
 			);
 		};
 /* End PBXProject section */
@@ -323,6 +376,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DA1E45DC27EE25E200053BC8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -334,6 +394,7 @@
 				DA195FB027D792B300CF27E2 /* ContentView.swift in Sources */,
 				DA15D63827D8E3AF002D3D58 /* API.swift in Sources */,
 				DABE425727E5CBDB00980CC6 /* LuCI.swift in Sources */,
+				DA8766D127EF43D7000C34C1 /* Error.swift in Sources */,
 				DA195FAE27D792B300CF27E2 /* LuCIApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -345,6 +406,14 @@
 				DA195FCB27D792B600CF27E2 /* LuCIApp.swift in Sources */,
 				DA195FC927D792B600CF27E2 /* ContentView.swift in Sources */,
 				DA195FCD27D792B600CF27E2 /* ComplicationController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA1E45DA27EE25E200053BC8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA1E45E127EE25E200053BC8 /* LuCIAPITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,6 +429,11 @@
 			isa = PBXTargetDependency;
 			target = DA195FC227D792B600CF27E2 /* LuCI WatchKit Extension */;
 			targetProxy = DA195FC527D792B600CF27E2 /* PBXContainerItemProxy */;
+		};
+		DA1E45E327EE25E200053BC8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA195FA927D792B300CF27E2 /* LuCI */;
+			targetProxy = DA1E45E227EE25E200053BC8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -656,6 +730,45 @@
 			};
 			name = Release;
 		};
+		DA1E45E527EE25E200053BC8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cghtest.LuCITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LuCI.app/LuCI";
+			};
+			name = Debug;
+		};
+		DA1E45E627EE25E200053BC8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cghtest.LuCITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LuCI.app/LuCI";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -691,6 +804,15 @@
 			buildConfigurations = (
 				DA195FDF27D792B700CF27E2 /* Debug */,
 				DA195FE027D792B700CF27E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DA1E45E427EE25E200053BC8 /* Build configuration list for PBXNativeTarget "LuCITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA1E45E527EE25E200053BC8 /* Debug */,
+				DA1E45E627EE25E200053BC8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
