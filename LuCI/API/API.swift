@@ -148,7 +148,7 @@ class API {
         let dns: [String]
     }
 
-    private func getRequest(_ path: String, redirect: Bool = true) async throws -> String {
+    internal func getRequest(_ path: String, redirect: Bool = true) async throws -> String {
         return try await withCheckedThrowingContinuation { continuation in
             self.newRequest(path, redirect: redirect).response { resp in
                 self.handleResponse(resp) { text in

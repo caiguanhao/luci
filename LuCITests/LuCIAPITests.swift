@@ -34,6 +34,14 @@ class LuCIAPITests: XCTestCase {
         XCTAssertGreaterThan(status.memory.buffered, 0)
     }
 
+    func testShadowSocksR() async throws {
+        let settings = try await api.ShadowSocksR_getBasicSettings()
+        XCTAssertGreaterThan(settings.count, 0)
+        if settings.count > 0 {
+            XCTAssertGreaterThan(settings[0].options.count, 0)
+        }
+    }
+
     private func getHUP() -> (host: String, user: String, pass: String) {
         // To customize host, user or password, create test.config.json file
         // in project's root directory. For example:

@@ -68,6 +68,31 @@ class LuCI {
         ]
     }
 
+    struct ShadowSocksRGroup: Identifiable {
+        let id = UUID()
+        let title: String
+        let settings: [ShadowSocksRSetting]
+    }
+
+    struct ShadowSocksRSetting: Identifiable {
+        let id = UUID()
+        let title: String
+        let value: String
+    }
+
+    func getShadowSocks() async throws -> [ShadowSocksRGroup] {
+        try await update()
+        let items = try await api.ShadowSocksR_getBasicSettings()
+        var settings = [ShadowSocksRSetting]()
+        for item in items {
+            let value = item.selected > -1 ? item.options[item.selected].title : "-"
+            settings.append(ShadowSocksRSetting(title: item.title, value: value))
+        }
+        return [
+            ShadowSocksRGroup(title: "BASIC", settings: settings)
+        ]
+    }
+
     private func toDuration(_ duration: Int) -> String {
         let fmt = DateComponentsFormatter()
         fmt.unitsStyle = .abbreviated
