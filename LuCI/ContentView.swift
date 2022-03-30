@@ -78,26 +78,64 @@ struct MainView: View {
     }
 }
 
+struct ShadowSocksROptionsView: View {
+    @EnvironmentObject var settings: LuCI.ShadowSocksRGroups
+    @Environment(\.presentationMode) var presentationMode
+
+    let groupIdx: Int
+    let settingIdx: Int
+
+    var setting: LuCI.ShadowSocksRSetting {
+        return settings.groups[groupIdx].settings[settingIdx]
+    }
+
+    var body: some View {
+        ForEach(setting.options.indices, id: \.self) { index in
+            VStack {
+                Button(action: {
+                    settings.groups[groupIdx].settings[settingIdx].selectedIndex = index
+                    self.presentationMode.wrappedValue.dismiss()
+                }, label: {
+                    HStack {
+                        Text(setting.options[index].title)
+                            .foregroundColor(index == setting.selectedIndex ? .accentColor : .primary)
+                    }
+                })
+            }
+        }
+    }
+}
+
 struct ShadowSocksRSettingsView: View {
-    var settings: [LuCI.ShadowSocksRGroup]
+    @EnvironmentObject var settings: LuCI.ShadowSocksRGroups
 
     var body: some View {
         GeometryReader { metrics in
             List {
-                ForEach(settings) { group in
+                ForEach(settings.groups.indices) { groupIdx in
+                    let group = settings.groups[groupIdx]
                     Section {
-                        ForEach(group.settings) { s in
+                        ForEach(group.settings.indices) { settingIdx in
+                            let setting = group.settings[settingIdx]
                             VStack {
-                                HStack {
-                                    Text(s.title)
-                                    Spacer()
-                                    Text(s.value)
-                                        .multilineTextAlignment(.trailing)
-                                        .frame(width: metrics.size.width * 0.5, alignment: .trailing)
-                                        .lineLimit(2)
-                                        .minimumScaleFactor(0.5)
-                                        .foregroundStyle(.secondary)
-                                }
+                                NavigationLink(destination: {
+                                    List {
+                                        ShadowSocksROptionsView(groupIdx: groupIdx,
+                                                                settingIdx: settingIdx)
+                                            .environmentObject(settings)
+                                    }.navigationTitle(setting.title)
+                                }, label: {
+                                    HStack {
+                                        Text(setting.title)
+                                        Spacer()
+                                        Text(setting.valueText)
+                                            .multilineTextAlignment(.trailing)
+                                            .frame(width: metrics.size.width * 0.4, alignment: .trailing)
+                                            .lineLimit(2)
+                                            .minimumScaleFactor(0.5)
+                                            .foregroundStyle(.secondary)
+                                    }
+                                })
                             }
                         }
                     } header: {
@@ -110,7 +148,7 @@ struct ShadowSocksRSettingsView: View {
 }
 
 struct ShadowSocksRView: View {
-    @State var settings: [LuCI.ShadowSocksRGroup]?
+    @State var settings: LuCI.ShadowSocksRGroups?
 
     func getSettings() async throws {
         do {
@@ -125,7 +163,7 @@ struct ShadowSocksRView: View {
             if settings == nil {
                 Text("(nothing here)").foregroundColor(.secondary)
             } else {
-                ShadowSocksRSettingsView(settings: settings!)
+                ShadowSocksRSettingsView().environmentObject(settings!)
             }
         }
     }

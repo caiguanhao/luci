@@ -68,29 +68,53 @@ class LuCI {
         ]
     }
 
+    class ShadowSocksRGroups: ObservableObject {
+        @Published var groups = [ShadowSocksRGroup]()
+
+        init(groups: [ShadowSocksRGroup]) {
+            self.groups = groups
+        }
+    }
+
     struct ShadowSocksRGroup: Identifiable {
         let id = UUID()
         let title: String
-        let settings: [ShadowSocksRSetting]
+        var settings: [ShadowSocksRSetting]
     }
 
     struct ShadowSocksRSetting: Identifiable {
         let id = UUID()
         let title: String
+        let options: [ShadowSocksROption]
+        var selectedIndex: Int
+        var value: String {
+            return selectedIndex > -1 && selectedIndex < options.count ? options[selectedIndex].value : "null"
+        }
+        var valueText: String {
+            return selectedIndex > -1 && selectedIndex < options.count ? options[selectedIndex].title : "-"
+        }
+    }
+
+    struct ShadowSocksROption: Identifiable {
+        let id = UUID()
+        let title: String
         let value: String
     }
 
-    func getShadowSocks() async throws -> [ShadowSocksRGroup] {
+    func getShadowSocks() async throws -> ShadowSocksRGroups {
         try await update()
         let items = try await api.ShadowSocksR_getBasicSettings()
         var settings = [ShadowSocksRSetting]()
         for item in items {
-            let value = item.selected > -1 ? item.options[item.selected].title : "-"
-            settings.append(ShadowSocksRSetting(title: item.title, value: value))
+            var options = [ShadowSocksROption]()
+            for option in item.options {
+                options.append(ShadowSocksROption(title: option.title, value: option.value))
+            }
+            settings.append(ShadowSocksRSetting(title: item.title, options: options, selectedIndex: item.selected))
         }
-        return [
+        return ShadowSocksRGroups(groups: [
             ShadowSocksRGroup(title: "BASIC", settings: settings)
-        ]
+        ])
     }
 
     private func toDuration(_ duration: Int) -> String {
