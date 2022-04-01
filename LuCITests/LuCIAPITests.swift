@@ -40,6 +40,8 @@ class LuCIAPITests: XCTestCase {
         if settings.count > 0 {
             XCTAssertGreaterThan(settings[0].options.count, 0)
         }
+        let servers = try await api.ShadowSocksR_getServerNodes()
+        XCTAssertGreaterThan(servers.count, 0)
     }
 
     private func getHUP() -> (host: String, user: String, pass: String) {
@@ -48,6 +50,7 @@ class LuCIAPITests: XCTestCase {
         // {
         //   "pass": "15817878390"
         // }
+        #if targetEnvironment(simulator)
         if let root = ProcessInfo.processInfo.environment["SRCROOT"] {
             let testConfigFile = NSString.path(withComponents: [root, "test.config.json"])
             if FileManager.default.fileExists(atPath: testConfigFile) {
@@ -61,6 +64,7 @@ class LuCIAPITests: XCTestCase {
                 }
             }
         }
+        #endif
         return (LuCI.DEFAULT_HOST, LuCI.DEFAULT_USER, LuCI.DEFAULT_PASS)
     }
 }

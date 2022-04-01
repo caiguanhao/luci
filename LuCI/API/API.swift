@@ -148,9 +148,9 @@ class API {
         let dns: [String]
     }
 
-    internal func getRequest(_ path: String, redirect: Bool = true) async throws -> String {
+    internal func getRequest(_ path: String, redirect: Bool = true, timeout: Double = 5) async throws -> String {
         return try await withCheckedThrowingContinuation { continuation in
-            self.newRequest(path, redirect: redirect).response { resp in
+            self.newRequest(path, redirect: redirect, timeout: timeout).response { resp in
                 self.handleResponse(resp) { text in
                     continuation.resume(returning: text)
                 } fail: { err in
@@ -160,9 +160,9 @@ class API {
         }
     }
 
-    private func getRequest<T: Decodable>(_ path: String, type responseType: T.Type) async throws -> T {
+    internal func getRequest<T: Decodable>(_ path: String, type responseType: T.Type, timeout: Double = 5) async throws -> T {
         return try await withCheckedThrowingContinuation { continuation in
-            self.newRequest(path).responseDecodable(of: responseType) { resp in
+            self.newRequest(path, timeout: timeout).responseDecodable(of: responseType) { resp in
                 self.handleResponse(resp) { _ in
                     continuation.resume(returning: resp.value!)
                 } fail: { err in
@@ -172,13 +172,13 @@ class API {
         }
     }
 
-    private func newRequest(_ path: String, redirect: Bool = true) -> DataRequest {
+    private func newRequest(_ path: String, redirect: Bool = true, timeout: Double = 5) -> DataRequest {
         let url = "http://\(self.host)/cgi-bin/luci\(path)"
         let headers: [String: String] = [
             "Cookie": "sysauth=\(self.auth ?? "")",
         ]
         let req = manager.request(url, method: .get, headers: HTTPHeaders(headers)) {
-            $0.timeoutInterval = 3
+            $0.timeoutInterval = timeout
         }
         if (redirect == false) {
             req.redirect(using: .doNotFollow)

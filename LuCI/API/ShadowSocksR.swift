@@ -63,4 +63,78 @@ extension API {
         }
         return settings
     }
+
+    struct Server {
+        let id: String
+        let type: String
+        let name: String
+        let domain: String
+        let port: String
+        let transport: String
+        let wsPath: String
+        let tls: String
+        var description: String {
+            return String(describing: self)
+        }
+    }
+
+    func ShadowSocksR_getServerNodes() async throws -> [Server] {
+        let response = try await self.getRequest("/admin/services/shadowsocksr/servers", redirect: false)
+        let doc = try XMLDocument(string: response, encoding: .utf8)
+        let rows = doc.css(".cbi-section-table-row")
+        var servers = [Server]()
+        for row in rows {
+            let idStr = row.attr("id")
+            if idStr == nil {
+                continue
+            }
+            let inputs = row.css("input")
+            var type: String?
+            var name: String?
+            for input in inputs {
+                let id = input.attr("id")
+                if id == nil {
+                    continue
+                }
+                if id!.hasSuffix(".type") {
+                    type = input.attr("value")
+                }
+                if id!.hasSuffix(".alias") {
+                    name = input.attr("value")
+                }
+            }
+            if name == nil || type == nil {
+                continue
+            }
+            let id = idStr!.replacingOccurrences(of: "cbi-shadowsocksr-", with: "")
+            let domain = row.css(".pingtime").first?.attr("hint") ?? ""
+            let port = row.css(".socket-connected").first?.attr("hint") ?? ""
+            let transport = row.css(".transport").first?.attr("hint") ?? ""
+            let wsPath = row.css(".wsPath").first?.attr("hint") ?? ""
+            let tls = row.css(".tls").first?.attr("hint") ?? ""
+            servers.append(Server(id: id, type: type!, name: name!,
+                                  domain: domain, port: port,
+                                  transport: transport, wsPath: wsPath, tls: tls))
+        }
+        return servers
+    }
+
+    struct PingResult: Codable {
+        let ping: Int
+        let socket: Bool
+    }
+
+    func ShadowSocksR_pingServerNode(_ server: Server) async throws -> PingResult {
+        var components = URLComponents()
+        components.path = "/admin/services/shadowsocksr/ping"
+        components.queryItems = [
+            URLQueryItem(name: "domain", value: server.domain),
+            URLQueryItem(name: "port", value: server.port),
+            URLQueryItem(name: "transport", value: server.transport),
+            URLQueryItem(name: "wsPath", value: server.wsPath),
+            URLQueryItem(name: "tls", value: server.tls)
+        ]
+        let url = components.url?.absoluteString
+        return try await self.getRequest(url!, type: PingResult.self, timeout: 10)
+    }
 }

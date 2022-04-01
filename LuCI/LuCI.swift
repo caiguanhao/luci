@@ -117,6 +117,62 @@ class LuCI {
         ])
     }
 
+    class ShadowSocksRServers: ObservableObject, CustomStringConvertible {
+        @Published var servers: [ShadowSocksRServer]
+
+        init(_ servers: [ShadowSocksRServer]) {
+            self.servers = servers
+        }
+
+        var count: Int {
+            return self.servers.count
+        }
+
+        var description: String {
+            return servers.description
+        }
+
+        func findServerById(_ id: String) -> ShadowSocksRServer? {
+            for server in servers {
+                if server.server.id == id {
+                    return server
+                }
+            }
+            return nil
+        }
+    }
+
+    class ShadowSocksRServer: ObservableObject, CustomStringConvertible {
+        let server: API.Server
+        @Published var socketConnected: Bool?
+        @Published var pingLatency: Int?
+
+        init(_ server: API.Server) {
+            self.server = server
+        }
+
+        var description: String {
+            return server.description +
+            "(socketConnected: \(String(describing: socketConnected)), " +
+            "pingLatency: \(String(describing: pingLatency)))"
+        }
+    }
+
+    func getShadowSocksRServerNodes() async throws -> ShadowSocksRServers {
+        try await update()
+        let servers = try await api.ShadowSocksR_getServerNodes()
+        var nodes = [ShadowSocksRServer]()
+        for s in servers {
+            nodes.append(ShadowSocksRServer(s))
+        }
+        return ShadowSocksRServers(nodes)
+    }
+
+    func pingServer(_ server: ShadowSocksRServer) async throws -> (Bool, Int) {
+        let result = try await api.ShadowSocksR_pingServerNode(server.server)
+        return (result.socket, result.ping)
+    }
+
     private func toDuration(_ duration: Int) -> String {
         let fmt = DateComponentsFormatter()
         fmt.unitsStyle = .abbreviated

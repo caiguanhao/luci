@@ -89,20 +89,107 @@ struct ShadowSocksROptionsView: View {
         return settings.groups[groupIdx].settings[settingIdx]
     }
 
+    @State var testing: Bool = false
+    @State var servers: LuCI.ShadowSocksRServers?
+
     var body: some View {
-        ForEach(setting.options.indices, id: \.self) { index in
-            VStack {
-                Button(action: {
-                    settings.groups[groupIdx].settings[settingIdx].selectedIndex = index
-                    self.presentationMode.wrappedValue.dismiss()
-                }, label: {
-                    HStack {
-                        Text(setting.options[index].title)
-                            .foregroundColor(index == setting.selectedIndex ? .accentColor : .primary)
+        Section {
+            Button(action: {
+                Task {
+                    testing = true
+                    self.servers = try await LuCI.shared.getShadowSocksRServerNodes()
+                    let srvs = self.servers!.servers
+                    try await withThrowingTaskGroup(of: (Int, (Bool, Int)).self) { group in
+                        var count = 0
+                        for (index, server) in srvs.enumerated() {
+                            count += 1
+                            if count > 5 {
+                                break
+                            }
+                            group.addTask {
+                                let (con, lat) = try await LuCI.shared.pingServer(server)
+                                return (index, (con, lat))
+                            }
+                        }
+                        for try await (index, (socketConnected, pingLatency)) in group {
+                            srvs[index].socketConnected = socketConnected
+                            srvs[index].pingLatency = pingLatency
+                        }
                     }
-                })
+                    testing = false
+                }
+            }, label: {
+                HStack {
+                    Text("Run Connectivity Test")
+                        .foregroundColor(testing ? .gray : .green)
+                    if testing {
+                        Spacer()
+                        ProgressView()
+                    }
+                }
+            }).disabled(testing)
+        }
+        Section {
+            ForEach(setting.options.indices, id: \.self) { index in
+                VStack {
+                    Button(action: {
+                        settings.groups[groupIdx].settings[settingIdx].selectedIndex = index
+                        self.presentationMode.wrappedValue.dismiss()
+                    }, label: {
+                        HStack {
+                            Text(setting.options[index].title)
+                                .foregroundColor(index == setting.selectedIndex ? .accentColor : .primary)
+                            Spacer()
+                            PSrv(id: setting.options[index].value, servers: $servers)
+                        }
+                    })
+                }
             }
         }
+    }
+}
+
+struct PSrv: View {
+    var id: String
+    @Binding var servers: LuCI.ShadowSocksRServers?
+    var server: LuCI.ShadowSocksRServer? {
+        if servers == nil {
+            return nil
+        }
+        for server in servers!.servers {
+            if server.server.id == id {
+                return server
+            }
+        }
+        return nil
+    }
+
+    var text: String {
+        if self.server == nil || self.server!.pingLatency == nil {
+            return "-"
+        }
+        return "\(self.server!.pingLatency!)ms"
+    }
+
+    var color: Color {
+        if self.server == nil || self.server!.pingLatency == nil {
+            return .gray
+        }
+        let lat = self.server!.pingLatency!
+        if lat < 100 {
+            return .green
+        }
+        if lat < 200 {
+            return .orange
+        }
+        return .red
+    }
+
+    var body: some View {
+        Text(text)
+            .foregroundColor(color)
+            .font(.system(size: 12))
+            .frame(width: 60, alignment: .trailing)
     }
 }
 
@@ -124,6 +211,11 @@ struct ShadowSocksRSettingsView: View {
                                                                 settingIdx: settingIdx)
                                             .environmentObject(settings)
                                     }.navigationTitle(setting.title)
+                                        .introspectTableView {
+                                            // smaller section spacing
+                                            $0.sectionHeaderHeight = 0
+                                            $0.sectionHeaderTopPadding = 0
+                                        }
                                 }, label: {
                                     HStack {
                                         Text(setting.title)
