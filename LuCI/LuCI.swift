@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import os.log
 
 class LuCI {
     static let DEFAULT_HOST = "192.168.2.1"
@@ -181,7 +182,9 @@ class LuCI {
     }
 
     func pingServer(_ server: ShadowSocksRServer) async throws -> (Bool, Int) {
-        let result = try await api.ShadowSocksR_pingServerNode(server.server)
+        let srv = server.server
+        os_log("PING %@ PORT %@ TYPE %@", srv.domain, srv.port, srv.type)
+        let result = try await api.ShadowSocksR_pingServerNode(srv)
         return (result.socket, result.ping)
     }
 

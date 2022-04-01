@@ -208,6 +208,8 @@ struct SSRTestConnView: View {
                     }
                 }
             })
+        }.onDisappear {
+            LuCI.shared.cancelAll()
         }
     }
 }
