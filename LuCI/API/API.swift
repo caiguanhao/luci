@@ -35,6 +35,10 @@ class API {
         self.pass = pass
     }
 
+    func cancelAll() {
+        self.manager.cancelAllRequests()
+    }
+
     func update(host: String, user: String, pass: String) async throws {
         if self.host != host || self.user != user || self.pass != pass {
             self.host = host

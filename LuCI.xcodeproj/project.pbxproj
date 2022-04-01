@@ -23,6 +23,7 @@
 		DA195FD227D792B700CF27E2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA195FD127D792B700CF27E2 /* Preview Assets.xcassets */; };
 		DA1E45D627ECDB2A00053BC8 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = DA1E45D527ECDB2A00053BC8 /* Introspect */; };
 		DA1E45E127EE25E200053BC8 /* LuCIAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1E45E027EE25E200053BC8 /* LuCIAPITests.swift */; };
+		DA8074F527F72BB500948B3D /* SSRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8074F427F72BB500948B3D /* SSRView.swift */; };
 		DA8766D127EF43D7000C34C1 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8766D027EF43D7000C34C1 /* Error.swift */; };
 		DA8766D327EF8146000C34C1 /* ShadowSocksR.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8766D227EF8146000C34C1 /* ShadowSocksR.swift */; };
 		DABE425527E57DB600980CC6 /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = DABE425427E57DB600980CC6 /* Fuzi */; };
@@ -97,6 +98,7 @@
 		DA195FD327D792B700CF27E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DA1E45DE27EE25E200053BC8 /* LuCITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LuCITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1E45E027EE25E200053BC8 /* LuCIAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuCIAPITests.swift; sourceTree = "<group>"; };
+		DA8074F427F72BB500948B3D /* SSRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSRView.swift; sourceTree = "<group>"; };
 		DA8766D027EF43D7000C34C1 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		DA8766D227EF8146000C34C1 /* ShadowSocksR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowSocksR.swift; sourceTree = "<group>"; };
 		DABE425627E5CBDB00980CC6 /* LuCI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuCI.swift; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 				DABE425627E5CBDB00980CC6 /* LuCI.swift */,
 				DA195FAD27D792B300CF27E2 /* LuCIApp.swift */,
 				DA195FAF27D792B300CF27E2 /* ContentView.swift */,
+				DA8074F427F72BB500948B3D /* SSRView.swift */,
 				DABE425827E5DDE600980CC6 /* SettingsView.swift */,
 				DA195FB127D792B500CF27E2 /* Assets.xcassets */,
 				DA195FB327D792B500CF27E2 /* Preview Content */,
@@ -397,6 +400,7 @@
 				DA195FB027D792B300CF27E2 /* ContentView.swift in Sources */,
 				DA15D63827D8E3AF002D3D58 /* API.swift in Sources */,
 				DABE425727E5CBDB00980CC6 /* LuCI.swift in Sources */,
+				DA8074F527F72BB500948B3D /* SSRView.swift in Sources */,
 				DA8766D127EF43D7000C34C1 /* Error.swift in Sources */,
 				DA8766D327EF8146000C34C1 /* ShadowSocksR.swift in Sources */,
 				DA195FAE27D792B300CF27E2 /* LuCIApp.swift in Sources */,

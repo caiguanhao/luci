@@ -37,6 +37,10 @@ class LuCI {
         try await api.update(host: host, user: user, pass: pass)
     }
 
+    func cancelAll() {
+        api.cancelAll()
+    }
+
     struct StatusGroup: Identifiable {
         let id = UUID()
         let name: String
@@ -84,6 +88,7 @@ class LuCI {
 
     struct ShadowSocksRSetting: Identifiable {
         let id = UUID()
+        let name: String
         let title: String
         let options: [ShadowSocksROption]
         var selectedIndex: Int
@@ -110,7 +115,8 @@ class LuCI {
             for option in item.options {
                 options.append(ShadowSocksROption(title: option.title, value: option.value))
             }
-            settings.append(ShadowSocksRSetting(title: item.title, options: options, selectedIndex: item.selected))
+            settings.append(ShadowSocksRSetting(name: item.name, title: item.title,
+                                                options: options, selectedIndex: item.selected))
         }
         return ShadowSocksRGroups(groups: [
             ShadowSocksRGroup(title: "BASIC", settings: settings)
@@ -118,11 +124,7 @@ class LuCI {
     }
 
     class ShadowSocksRServers: ObservableObject, CustomStringConvertible {
-        @Published var servers: [ShadowSocksRServer]
-
-        init(_ servers: [ShadowSocksRServer]) {
-            self.servers = servers
-        }
+        @Published var servers = [ShadowSocksRServer]()
 
         var count: Int {
             return self.servers.count
@@ -132,20 +134,30 @@ class LuCI {
             return servers.description
         }
 
-        func findServerById(_ id: String) -> ShadowSocksRServer? {
-            for server in servers {
-                if server.server.id == id {
-                    return server
+        func append(_ server: ShadowSocksRServer) {
+            self.servers.append(server)
+        }
+
+        func removeAll() {
+            self.servers.removeAll()
+        }
+
+        func update(_ server: ShadowSocksRServer) {
+            for i in servers.indices {
+                if servers[i] === server {
+                    self.servers.remove(at: i)
+                    break
                 }
             }
-            return nil
+            self.servers.append(server)
         }
     }
 
-    class ShadowSocksRServer: ObservableObject, CustomStringConvertible {
+    class ShadowSocksRServer: CustomStringConvertible {
         let server: API.Server
-        @Published var socketConnected: Bool?
-        @Published var pingLatency: Int?
+        var testing: Bool = false
+        var socketConnected: Bool?
+        var pingLatency: Int?
 
         init(_ server: API.Server) {
             self.server = server
@@ -158,14 +170,14 @@ class LuCI {
         }
     }
 
-    func getShadowSocksRServerNodes() async throws -> ShadowSocksRServers {
+    func getShadowSocksRServerNodes() async throws -> [ShadowSocksRServer] {
         try await update()
         let servers = try await api.ShadowSocksR_getServerNodes()
         var nodes = [ShadowSocksRServer]()
         for s in servers {
             nodes.append(ShadowSocksRServer(s))
         }
-        return ShadowSocksRServers(nodes)
+        return nodes
     }
 
     func pingServer(_ server: ShadowSocksRServer) async throws -> (Bool, Int) {
