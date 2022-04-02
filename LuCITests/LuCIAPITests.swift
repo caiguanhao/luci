@@ -41,6 +41,8 @@ class LuCIAPITests: XCTestCase {
             XCTAssertGreaterThan(group.settings[0].options.count, 0)
         }
         let updated = try await api.SSR_updateSettings(group)
+        let ok = try await api.SSR_restart(token: updated.hiddenFields["token"] ?? "")
+        XCTAssertTrue(ok)
         XCTAssertEqual(group, updated)
         let servers = try await api.SSR_getServerNodes()
         XCTAssertGreaterThan(servers.count, 0)

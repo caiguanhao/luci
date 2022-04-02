@@ -97,6 +97,12 @@ extension API {
         return try await SSR_parseSettings(response)
     }
 
+    func SSR_restart(token: String) async throws -> Bool {
+        let data = [ "token": token ]
+        let response = try await self.mkRequest("/servicectl/restart/shadowsocksr", method: .post, parameters: data)
+        return response == "OK"
+    }
+
     struct Server {
         let id: String
         let type: String

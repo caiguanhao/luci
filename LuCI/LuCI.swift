@@ -162,6 +162,7 @@ class LuCI {
         }
         let input = API.SSRSettings(hiddenFields: group.hiddenFields, settings: ss)
         let ssrSettings = try await api.SSR_updateSettings(input)
+        _ = try await api.SSR_restart(token: ssrSettings.hiddenFields["token"] ?? "")
         return toShadowSocksRGroups(ssrSettings)
     }
 
