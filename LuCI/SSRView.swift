@@ -89,6 +89,9 @@ struct SSRSettingView: View {
                                 .environmentObject(settings)
                                 .environmentObject(LuCI.ShadowSocksRServers())
                         }.navigationTitle(setting.title)
+                            .onDisappear {
+                                LuCI.shared.cancelAll()
+                            }
                             .introspectTableView {
                                 // smaller section spacing
                                 $0.sectionHeaderHeight = 0
@@ -249,8 +252,6 @@ struct SSRTestConnView: View {
                     }
                 }
             })
-        }.onDisappear {
-            LuCI.shared.cancelAll()
         }
     }
 }

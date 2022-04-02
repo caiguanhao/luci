@@ -161,7 +161,7 @@ class LuCI {
             ss.append(setting.asSetting())
         }
         let input = API.SSRSettings(hiddenFields: group.hiddenFields, settings: ss)
-        let ssrSettings = try await api.SSR_updateSettings(input, apply: true)
+        let ssrSettings = try await api.SSR_updateSettings(input)
         return toShadowSocksRGroups(ssrSettings)
     }
 

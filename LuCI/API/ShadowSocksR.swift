@@ -81,7 +81,7 @@ extension API {
         return SSRSettings(hiddenFields: hiddenFields, settings: settings)
     }
 
-    func SSR_updateSettings(_ group: SSRSettings, apply: Bool = false) async throws -> SSRSettings {
+    func SSR_updateSettings(_ group: SSRSettings) async throws -> SSRSettings {
         var data = [String: String]()
         for (key, value) in group.hiddenFields {
             data[key] = value
@@ -92,9 +92,6 @@ extension API {
             }
             let value = setting.options[setting.selected].value
             data[setting.name] = value
-        }
-        if apply {
-            data["cbi.apply"] = "OK"
         }
         let response = try await self.mkRequest("/admin/services/shadowsocksr", method: .post, parameters: data, redirect: false)
         return try await SSR_parseSettings(response)

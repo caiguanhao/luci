@@ -40,7 +40,7 @@ class LuCIAPITests: XCTestCase {
         if group.settings.count > 0 {
             XCTAssertGreaterThan(group.settings[0].options.count, 0)
         }
-        let updated = try await api.SSR_updateSettings(group, apply: false)
+        let updated = try await api.SSR_updateSettings(group)
         XCTAssertEqual(group, updated)
         let servers = try await api.SSR_getServerNodes()
         XCTAssertGreaterThan(servers.count, 0)
