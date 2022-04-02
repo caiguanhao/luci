@@ -79,12 +79,25 @@ class LuCI {
         init(groups: [ShadowSocksRGroup]) {
             self.groups = groups
         }
+
+        func update(_ groups: ShadowSocksRGroups) {
+            self.groups = groups.groups
+        }
     }
 
     struct ShadowSocksRGroup: Identifiable {
         let id = UUID()
         let title: String
+        var hiddenFields: [String: String]
         var settings: [ShadowSocksRSetting]
+        var hasChanaged: Bool {
+            for setting in settings {
+                if setting.originalSelectedIndex != setting.selectedIndex {
+                    return true
+                }
+            }
+            return false
+        }
     }
 
     struct ShadowSocksRSetting: Identifiable {
@@ -92,6 +105,7 @@ class LuCI {
         let name: String
         let title: String
         let options: [ShadowSocksROption]
+        var originalSelectedIndex: Int
         var selectedIndex: Int
         var value: String {
             return selectedIndex > -1 && selectedIndex < options.count ? options[selectedIndex].value : "null"
@@ -99,29 +113,56 @@ class LuCI {
         var valueText: String {
             return selectedIndex > -1 && selectedIndex < options.count ? options[selectedIndex].title : "-"
         }
+        func asSetting() -> API.SSRSetting {
+            var opts = [API.SSROption]()
+            for option in options {
+                opts.append(option.asOption())
+            }
+            return API.SSRSetting(name: name, title: title, options: opts, selected: selectedIndex)
+        }
     }
 
     struct ShadowSocksROption: Identifiable {
         let id = UUID()
         let title: String
         let value: String
+        func asOption() -> API.SSROption {
+            return API.SSROption(title: title, value: value)
+        }
     }
 
     func getShadowSocks() async throws -> ShadowSocksRGroups {
         try await update()
-        let items = try await api.ShadowSocksR_getBasicSettings()
+        let ssrSettings = try await api.SSR_getBasicSettings()
+        return toShadowSocksRGroups(ssrSettings)
+    }
+
+    func toShadowSocksRGroups(_ ssrSettings: API.SSRSettings) -> ShadowSocksRGroups {
         var settings = [ShadowSocksRSetting]()
-        for item in items {
+        for item in ssrSettings.settings {
             var options = [ShadowSocksROption]()
             for option in item.options {
                 options.append(ShadowSocksROption(title: option.title, value: option.value))
             }
             settings.append(ShadowSocksRSetting(name: item.name, title: item.title,
-                                                options: options, selectedIndex: item.selected))
+                                                options: options,
+                                                originalSelectedIndex: item.selected,
+                                                selectedIndex: item.selected))
         }
         return ShadowSocksRGroups(groups: [
-            ShadowSocksRGroup(title: "BASIC", settings: settings)
+            ShadowSocksRGroup(title: "BASIC", hiddenFields: ssrSettings.hiddenFields, settings: settings)
         ])
+    }
+
+    func updateSSRSettings(_ group: ShadowSocksRGroup) async throws -> ShadowSocksRGroups {
+        try await update()
+        var ss = [API.SSRSetting]()
+        for setting in group.settings {
+            ss.append(setting.asSetting())
+        }
+        let input = API.SSRSettings(hiddenFields: group.hiddenFields, settings: ss)
+        let ssrSettings = try await api.SSR_updateSettings(input, apply: true)
+        return toShadowSocksRGroups(ssrSettings)
     }
 
     class ShadowSocksRServers: ObservableObject, CustomStringConvertible {
@@ -173,7 +214,7 @@ class LuCI {
 
     func getShadowSocksRServerNodes() async throws -> [ShadowSocksRServer] {
         try await update()
-        let servers = try await api.ShadowSocksR_getServerNodes()
+        let servers = try await api.SSR_getServerNodes()
         var nodes = [ShadowSocksRServer]()
         for s in servers {
             nodes.append(ShadowSocksRServer(s))
@@ -184,7 +225,7 @@ class LuCI {
     func pingServer(_ server: ShadowSocksRServer) async throws -> (Bool, Int) {
         let srv = server.server
         os_log("PING %@ PORT %@ TYPE %@", srv.domain, srv.port, srv.type)
-        let result = try await api.ShadowSocksR_pingServerNode(srv)
+        let result = try await api.SSR_pingServerNode(srv)
         return (result.socket, result.ping)
     }
 

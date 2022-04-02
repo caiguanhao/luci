@@ -35,12 +35,14 @@ class LuCIAPITests: XCTestCase {
     }
 
     func testShadowSocksR() async throws {
-        let settings = try await api.ShadowSocksR_getBasicSettings()
-        XCTAssertGreaterThan(settings.count, 0)
-        if settings.count > 0 {
-            XCTAssertGreaterThan(settings[0].options.count, 0)
+        let group = try await api.SSR_getBasicSettings()
+        XCTAssertGreaterThan(group.settings.count, 0)
+        if group.settings.count > 0 {
+            XCTAssertGreaterThan(group.settings[0].options.count, 0)
         }
-        let servers = try await api.ShadowSocksR_getServerNodes()
+        let updated = try await api.SSR_updateSettings(group, apply: false)
+        XCTAssertEqual(group, updated)
+        let servers = try await api.SSR_getServerNodes()
         XCTAssertGreaterThan(servers.count, 0)
     }
 

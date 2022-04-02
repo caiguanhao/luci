@@ -58,42 +58,80 @@ struct SSRSettingsView: View {
         GeometryReader { metrics in
             List {
                 ForEach(settings.groups.indices) { groupIdx in
-                    let group = settings.groups[groupIdx]
-                    Section {
-                        ForEach(group.settings.indices) { settingIdx in
-                            let setting = group.settings[settingIdx]
-                            VStack {
-                                NavigationLink(destination: {
-                                    List {
-                                        SSROptionView(groupIdx: groupIdx,
-                                                      settingIdx: settingIdx)
-                                            .environmentObject(settings)
-                                            .environmentObject(LuCI.ShadowSocksRServers())
-                                    }.navigationTitle(setting.title)
-                                        .introspectTableView {
-                                            // smaller section spacing
-                                            $0.sectionHeaderHeight = 0
-                                            $0.sectionHeaderTopPadding = 0
-                                        }
-                                }, label: {
-                                    HStack {
-                                        Text(setting.title)
-                                        Spacer()
-                                        Text(setting.valueText)
-                                            .multilineTextAlignment(.trailing)
-                                            .frame(width: metrics.size.width * 0.4, alignment: .trailing)
-                                            .lineLimit(2)
-                                            .minimumScaleFactor(0.5)
-                                            .foregroundStyle(.secondary)
-                                    }
-                                })
-                            }
-                        }
-                    } header: {
-                        Text(group.title)
-                    }
+                    SSRSettingView(groupIdx: groupIdx, width: metrics.size.width * 0.4)
                 }
             }
+        }
+    }
+}
+
+struct SSRSettingView: View {
+    @EnvironmentObject var settings: LuCI.ShadowSocksRGroups
+
+    var groupIdx: Int
+    var width: CGFloat
+
+    private var group: LuCI.ShadowSocksRGroup {
+        return settings.groups[groupIdx]
+    }
+
+    @State private var saving = false
+
+    var body: some View {
+        Section {
+            ForEach(group.settings.indices) { settingIdx in
+                let setting = group.settings[settingIdx]
+                VStack {
+                    NavigationLink(destination: {
+                        List {
+                            SSROptionView(groupIdx: groupIdx,
+                                          settingIdx: settingIdx)
+                                .environmentObject(settings)
+                                .environmentObject(LuCI.ShadowSocksRServers())
+                        }.navigationTitle(setting.title)
+                            .introspectTableView {
+                                // smaller section spacing
+                                $0.sectionHeaderHeight = 0
+                                $0.sectionHeaderTopPadding = 0
+                            }
+                    }, label: {
+                        HStack {
+                            Text(setting.title)
+                            Spacer()
+                            Text(setting.valueText)
+                                .multilineTextAlignment(.trailing)
+                                .frame(width: width, alignment: .trailing)
+                                .lineLimit(2)
+                                .minimumScaleFactor(0.5)
+                                .foregroundStyle(.secondary)
+                        }
+                    })
+                }
+            }
+            if group.hasChanaged {
+                Button(action: {
+                    Task {
+                        saving = true
+                        do {
+                            let updated = try await LuCI.shared.updateSSRSettings(group)
+                            settings.update(updated)
+                        } catch {
+                            print(error)
+                        }
+                        saving = false
+                    }
+                }, label: {
+                    HStack {
+                        Text("Save & Apply").foregroundColor(saving ? .secondary : .green)
+                        if saving {
+                            Spacer()
+                            ProgressView()
+                        }
+                    }
+                }).disabled(saving)
+            }
+        } header: {
+            Text(group.title)
         }
     }
 }
