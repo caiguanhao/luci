@@ -22,7 +22,12 @@ struct SSRView: View {
     var list: some View {
         Group {
             if settings == nil {
-                Text("(nothing here)").foregroundColor(.secondary)
+                List {
+                    VStack {
+                        Text("(nothing here)").foregroundColor(.secondary)
+                    }.listRowBackground(Color.clear)
+                        .listRowInsets(EdgeInsets())
+                }
             } else {
                 SSRSettingsView().environmentObject(settings!)
             }
@@ -34,9 +39,7 @@ struct SSRView: View {
             list
                 .navigationTitle("ShadowSocksR")
                 .refreshable {
-                    Task {
-                        try await getSettings()
-                    }
+                    try? await getSettings()
                 }
         }
         .navigationViewStyle(.stack)

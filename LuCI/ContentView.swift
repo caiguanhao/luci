@@ -52,7 +52,12 @@ struct MainView: View {
     var status: some View {
         Group {
             if groups == nil {
-                Text("(nothing here)").foregroundColor(.secondary)
+                List {
+                    VStack {
+                        Text("(nothing here)").foregroundColor(.secondary)
+                    }.listRowBackground(Color.clear)
+                        .listRowInsets(EdgeInsets())
+                }
             } else {
                 StatusView(groups: groups!)
             }
@@ -64,9 +69,7 @@ struct MainView: View {
             status
                 .navigationTitle("Status")
                 .refreshable {
-                    Task {
-                        try await getStatus()
-                    }
+                    try? await getStatus()
                 }
         }
         .navigationViewStyle(.stack)
