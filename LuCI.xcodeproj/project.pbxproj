@@ -23,6 +23,12 @@
 		DA195FD227D792B700CF27E2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA195FD127D792B700CF27E2 /* Preview Assets.xcassets */; };
 		DA1E45D627ECDB2A00053BC8 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = DA1E45D527ECDB2A00053BC8 /* Introspect */; };
 		DA1E45E127EE25E200053BC8 /* LuCIAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1E45E027EE25E200053BC8 /* LuCIAPITests.swift */; };
+		DA5249EC27F8388A00B65856 /* StatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5249EB27F8388A00B65856 /* StatusView.swift */; };
+		DA5249EE27F84AE000B65856 /* IPAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5249ED27F84AE000B65856 /* IPAddress.swift */; };
+		DA5249F027F861FB00B65856 /* IPAddressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5249EF27F861FB00B65856 /* IPAddressTests.swift */; };
+		DA5249F227F8631200B65856 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5249F127F8631200B65856 /* Request.swift */; };
+		DA5249F527FAEB8000B65856 /* IPInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5249F427FAEB8000B65856 /* IPInfo.swift */; };
+		DA5249F727FAEE8100B65856 /* NetworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5249F627FAEE8100B65856 /* NetworkView.swift */; };
 		DA8074F527F72BB500948B3D /* SSRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8074F427F72BB500948B3D /* SSRView.swift */; };
 		DA8766D127EF43D7000C34C1 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8766D027EF43D7000C34C1 /* Error.swift */; };
 		DA8766D327EF8146000C34C1 /* ShadowSocksR.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8766D227EF8146000C34C1 /* ShadowSocksR.swift */; };
@@ -98,6 +104,12 @@
 		DA195FD327D792B700CF27E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DA1E45DE27EE25E200053BC8 /* LuCITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LuCITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1E45E027EE25E200053BC8 /* LuCIAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuCIAPITests.swift; sourceTree = "<group>"; };
+		DA5249EB27F8388A00B65856 /* StatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusView.swift; sourceTree = "<group>"; };
+		DA5249ED27F84AE000B65856 /* IPAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPAddress.swift; sourceTree = "<group>"; };
+		DA5249EF27F861FB00B65856 /* IPAddressTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPAddressTests.swift; sourceTree = "<group>"; };
+		DA5249F127F8631200B65856 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		DA5249F427FAEB8000B65856 /* IPInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPInfo.swift; sourceTree = "<group>"; };
+		DA5249F627FAEE8100B65856 /* NetworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkView.swift; sourceTree = "<group>"; };
 		DA8074F427F72BB500948B3D /* SSRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSRView.swift; sourceTree = "<group>"; };
 		DA8766D027EF43D7000C34C1 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		DA8766D227EF8146000C34C1 /* ShadowSocksR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowSocksR.swift; sourceTree = "<group>"; };
@@ -164,6 +176,8 @@
 				DA195FAF27D792B300CF27E2 /* ContentView.swift */,
 				DA8074F427F72BB500948B3D /* SSRView.swift */,
 				DABE425827E5DDE600980CC6 /* SettingsView.swift */,
+				DA5249EB27F8388A00B65856 /* StatusView.swift */,
+				DA5249F627FAEE8100B65856 /* NetworkView.swift */,
 				DA195FB127D792B500CF27E2 /* Assets.xcassets */,
 				DA195FB327D792B500CF27E2 /* Preview Content */,
 			);
@@ -210,9 +224,12 @@
 		DA1E45D727EDFC5800053BC8 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				DA5249F127F8631200B65856 /* Request.swift */,
 				DA15D63727D8E3AF002D3D58 /* API.swift */,
 				DA8766D027EF43D7000C34C1 /* Error.swift */,
 				DA8766D227EF8146000C34C1 /* ShadowSocksR.swift */,
+				DA5249F427FAEB8000B65856 /* IPInfo.swift */,
+				DA5249ED27F84AE000B65856 /* IPAddress.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -221,6 +238,7 @@
 			isa = PBXGroup;
 			children = (
 				DA1E45E027EE25E200053BC8 /* LuCIAPITests.swift */,
+				DA5249EF27F861FB00B65856 /* IPAddressTests.swift */,
 			);
 			path = LuCITests;
 			sourceTree = "<group>";
@@ -398,9 +416,14 @@
 			files = (
 				DABE425927E5DDE600980CC6 /* SettingsView.swift in Sources */,
 				DA195FB027D792B300CF27E2 /* ContentView.swift in Sources */,
+				DA5249EC27F8388A00B65856 /* StatusView.swift in Sources */,
+				DA5249EE27F84AE000B65856 /* IPAddress.swift in Sources */,
+				DA5249F227F8631200B65856 /* Request.swift in Sources */,
 				DA15D63827D8E3AF002D3D58 /* API.swift in Sources */,
+				DA5249F727FAEE8100B65856 /* NetworkView.swift in Sources */,
 				DABE425727E5CBDB00980CC6 /* LuCI.swift in Sources */,
 				DA8074F527F72BB500948B3D /* SSRView.swift in Sources */,
+				DA5249F527FAEB8000B65856 /* IPInfo.swift in Sources */,
 				DA8766D127EF43D7000C34C1 /* Error.swift in Sources */,
 				DA8766D327EF8146000C34C1 /* ShadowSocksR.swift in Sources */,
 				DA195FAE27D792B300CF27E2 /* LuCIApp.swift in Sources */,
@@ -422,6 +445,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA1E45E127EE25E200053BC8 /* LuCIAPITests.swift in Sources */,
+				DA5249F027F861FB00B65856 /* IPAddressTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
