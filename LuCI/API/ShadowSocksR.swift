@@ -176,4 +176,13 @@ extension API {
         let url = components.url?.absoluteString
         return try await self.getRequest(url!, type: PingResult.self, timeout: 10)
     }
+
+    struct RunningResult: Codable {
+        let running: Bool
+    }
+
+    func SSR_checkIfRunning() async throws -> Bool {
+        let result = try await self.getRequest("/admin/services/shadowsocksr/run", type: RunningResult.self)
+        return result.running
+    }
 }

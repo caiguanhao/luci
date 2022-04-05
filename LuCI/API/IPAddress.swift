@@ -33,7 +33,17 @@ class IPAddress {
             func toIPInfo() -> IPInfo {
                 var info = IPInfo()
                 info.ipAddress = ip
-                info.location = "\(city ?? "?"), \(countryName ?? "?")"
+                let n1 = city ?? ""
+                let n2 = countryName ?? ""
+                if n1.isEmpty && n2.isEmpty {
+                    info.location = "?"
+                } else if n2.isEmpty {
+                    info.location = "\(n1)"
+                } else if n1.isEmpty {
+                    info.location = "\(n2)"
+                } else {
+                    info.location = "\(n1), \(n2)"
+                }
                 info.orgName = organization
                 info.ispName = isp
                 info.latitude = latitude

@@ -13,11 +13,15 @@ struct SSRView: View {
 
     func getSettings() async throws {
         do {
+            let isOnOptionsPage = self.settings?.isOnOptionsPage ?? false
             self.settings = try await LuCI.shared.getShadowSocks()
+            self.settings?.isOnOptionsPage = isOnOptionsPage
         } catch {
             self.settings = nil
         }
     }
+
+    @State private var running = false
 
     var list: some View {
         Group {
@@ -30,14 +34,33 @@ struct SSRView: View {
                 }
             } else {
                 SSRSettingsView().environmentObject(settings!)
+                    .introspectNavigationController { nav in
+                        let bar = nav.navigationBar
+                        let hosting = UIHostingController(
+                            rootView: SSRRunningView(running: $running).environmentObject(settings!)
+                        )
+                        guard let hostingView = hosting.view else { return }
+                        bar.addSubview(hostingView)
+                        hostingView.backgroundColor = .clear
+                        lastHostingView?.removeFromSuperview()
+                        lastHostingView = hostingView
+                        hostingView.translatesAutoresizingMaskIntoConstraints = false
+                        NSLayoutConstraint.activate([
+                            hostingView.trailingAnchor.constraint(equalTo: bar.trailingAnchor, constant: -20),
+                            hostingView.bottomAnchor.constraint(equalTo: bar.bottomAnchor, constant: -12)
+                        ])
+
+                    }
             }
         }
     }
 
+    @State private var lastHostingView: UIView?
+
     var body: some View {
         NavigationView {
             list
-                .navigationTitle("ShadowSocksR")
+                .navigationTitle("SSR")
                 .refreshable {
                     try? await getSettings()
                 }
@@ -48,6 +71,45 @@ struct SSRView: View {
                 try await getSettings()
             }
         }
+    }
+}
+
+struct SSRRunningView: View {
+    @EnvironmentObject var settings: LuCI.ShadowSocksRGroups
+
+    @Binding var running: Bool
+    @State private var timer: Timer?
+
+    func stop() {
+        timer?.invalidate()
+    }
+
+    func start() {
+        stop()
+        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
+            Task {
+                self.running = try await LuCI.shared.checkRunning()
+            }
+        }
+    }
+
+    var body: some View {
+        Text(running ? "Running" : "Stopped")
+            .foregroundColor(running ? .green : .red)
+            .frame(width: 200, alignment: .trailing)
+            .opacity(settings.isOnOptionsPage ? 0 : 1)
+            .onChange(of: settings.isOnOptionsPage) { onOptionsPage in
+                stop()
+                if !onOptionsPage {
+                    start()
+                }
+            }
+            .onAppear {
+                start()
+            }
+            .onDisappear {
+                stop()
+            }
     }
 }
 
@@ -83,20 +145,8 @@ struct SSRSettingView: View {
                 let setting = group.settings[settingIdx]
                 VStack {
                     NavigationLink(destination: {
-                        List {
-                            SSROptionView(groupIdx: groupIdx,
-                                          settingIdx: settingIdx)
-                                .environmentObject(settings)
-                                .environmentObject(LuCI.ShadowSocksRServers())
-                        }.navigationTitle(setting.title)
-                            .onDisappear {
-                                LuCI.shared.cancelAll()
-                            }
-                            .introspectTableView {
-                                // smaller section spacing
-                                $0.sectionHeaderHeight = 0
-                                $0.sectionHeaderTopPadding = 0
-                            }
+                        SSROptionsView(groupIdx: groupIdx, settingIdx: settingIdx)
+                            .environmentObject(settings)
                     }, label: {
                         HStack {
                             Text(setting.title)
@@ -135,6 +185,41 @@ struct SSRSettingView: View {
             }
         } header: {
             Text(group.title)
+        }
+    }
+}
+
+struct SSROptionsView: View {
+    var groupIdx: Int
+    var settingIdx: Int
+
+    @EnvironmentObject var settings: LuCI.ShadowSocksRGroups
+    @Environment(\.isPresented) var isPresented
+
+    var body: some View {
+        let setting = settings.groups[groupIdx].settings[settingIdx]
+        List {
+            SSROptionView(groupIdx: groupIdx,
+                          settingIdx: settingIdx)
+                .environmentObject(settings)
+                .environmentObject(LuCI.ShadowSocksRServers())
+        }
+        .navigationTitle(setting.title)
+        .onDisappear {
+            LuCI.shared.cancelAll()
+        }
+        .introspectTableView {
+            // smaller section spacing
+            $0.sectionHeaderHeight = 0
+            $0.sectionHeaderTopPadding = 0
+        }
+        .onAppear {
+            if isPresented {
+                settings.isOnOptionsPage = true
+            }
+        }
+        .onChange(of: isPresented) {
+            settings.isOnOptionsPage = $0
         }
     }
 }

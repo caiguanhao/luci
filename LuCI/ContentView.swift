@@ -18,7 +18,7 @@ struct ContentView: View {
             }.tag(1)
             SSRView().tabItem {
                 Image(systemName: "paperplane")
-                Text("ShadowSocksR")
+                Text("SSR")
             }.tag(2)
             NetworkView().tabItem {
                 Image(systemName: "network")

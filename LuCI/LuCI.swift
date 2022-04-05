@@ -75,6 +75,7 @@ class LuCI {
 
     class ShadowSocksRGroups: ObservableObject {
         @Published var groups = [ShadowSocksRGroup]()
+        @Published var isOnOptionsPage = false
 
         init(groups: [ShadowSocksRGroup]) {
             self.groups = groups
@@ -228,6 +229,10 @@ class LuCI {
         os_log("PING %@ PORT %@ TYPE %@", srv.domain, srv.port, srv.type)
         let result = try await api.SSR_pingServerNode(srv)
         return (result.socket, result.ping)
+    }
+
+    func checkRunning() async throws -> Bool {
+        return try await api.SSR_checkIfRunning()
     }
 
     private func toDuration(_ duration: Int) -> String {
