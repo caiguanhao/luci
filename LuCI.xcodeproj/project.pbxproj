@@ -23,6 +23,7 @@
 		DA195FD227D792B700CF27E2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA195FD127D792B700CF27E2 /* Preview Assets.xcassets */; };
 		DA1E45D627ECDB2A00053BC8 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = DA1E45D527ECDB2A00053BC8 /* Introspect */; };
 		DA1E45E127EE25E200053BC8 /* LuCIAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1E45E027EE25E200053BC8 /* LuCIAPITests.swift */; };
+		DA263B1F27FE0F0E009D1F6E /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA263B1E27FE0F0E009D1F6E /* Secrets.swift */; };
 		DA5249EC27F8388A00B65856 /* StatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5249EB27F8388A00B65856 /* StatusView.swift */; };
 		DA5249EE27F84AE000B65856 /* IPAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5249ED27F84AE000B65856 /* IPAddress.swift */; };
 		DA5249F027F861FB00B65856 /* IPAddressTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5249EF27F861FB00B65856 /* IPAddressTests.swift */; };
@@ -104,6 +105,10 @@
 		DA195FD327D792B700CF27E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DA1E45DE27EE25E200053BC8 /* LuCITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LuCITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1E45E027EE25E200053BC8 /* LuCIAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuCIAPITests.swift; sourceTree = "<group>"; };
+		DA263B0B27FDEA94009D1F6E /* gyb.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = gyb.sh; sourceTree = "<group>"; };
+		DA263B0C27FDEC3D009D1F6E /* secrets.gyb */ = {isa = PBXFileReference; lastKnownFileType = text; path = secrets.gyb; sourceTree = "<group>"; };
+		DA263B1E27FE0F0E009D1F6E /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
+		DA263B2027FE0FF8009D1F6E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		DA5249EB27F8388A00B65856 /* StatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusView.swift; sourceTree = "<group>"; };
 		DA5249ED27F84AE000B65856 /* IPAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPAddress.swift; sourceTree = "<group>"; };
 		DA5249EF27F861FB00B65856 /* IPAddressTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPAddressTests.swift; sourceTree = "<group>"; };
@@ -152,6 +157,8 @@
 				DA195FBC27D792B500CF27E2 /* LuCI WatchKit App */,
 				DA195FC727D792B600CF27E2 /* LuCI WatchKit Extension */,
 				DA1E45DF27EE25E200053BC8 /* LuCITests */,
+				DA263B0A27FDEA73009D1F6E /* Scripts */,
+				DA263B2027FE0FF8009D1F6E /* README.md */,
 				DA195FAB27D792B300CF27E2 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -243,6 +250,24 @@
 			path = LuCITests;
 			sourceTree = "<group>";
 		};
+		DA263B0A27FDEA73009D1F6E /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				DA263B1D27FE0EE3009D1F6E /* Generated */,
+				DA263B0B27FDEA94009D1F6E /* gyb.sh */,
+				DA263B0C27FDEC3D009D1F6E /* secrets.gyb */,
+			);
+			path = Scripts;
+			sourceTree = "<group>";
+		};
+		DA263B1D27FE0EE3009D1F6E /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				DA263B1E27FE0F0E009D1F6E /* Secrets.swift */,
+			);
+			path = Generated;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -250,6 +275,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DA195FDE27D792B700CF27E2 /* Build configuration list for PBXNativeTarget "LuCI" */;
 			buildPhases = (
+				DA263B0D27FE0104009D1F6E /* Generate Code with gyb */,
 				DA195FA627D792B300CF27E2 /* Sources */,
 				DA195FA727D792B300CF27E2 /* Frameworks */,
 				DA195FA827D792B300CF27E2 /* Resources */,
@@ -409,6 +435,28 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		DA263B0D27FE0104009D1F6E /* Generate Code with gyb */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Generate Code with gyb";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "${PROJECT_DIR}/Scripts/gyb.sh\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		DA195FA627D792B300CF27E2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -423,6 +471,7 @@
 				DA5249F727FAEE8100B65856 /* NetworkView.swift in Sources */,
 				DABE425727E5CBDB00980CC6 /* LuCI.swift in Sources */,
 				DA8074F527F72BB500948B3D /* SSRView.swift in Sources */,
+				DA263B1F27FE0F0E009D1F6E /* Secrets.swift in Sources */,
 				DA5249F527FAEB8000B65856 /* IPInfo.swift in Sources */,
 				DA8766D127EF43D7000C34C1 /* Error.swift in Sources */,
 				DA8766D327EF8146000C34C1 /* ShadowSocksR.swift in Sources */,

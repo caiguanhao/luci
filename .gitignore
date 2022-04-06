@@ -1,3 +1,7 @@
 xcuserdata/
 
 /test.config.json
+/secrets.env
+
+/Scripts/gyb.py
+/Scripts/Generated/*.swift

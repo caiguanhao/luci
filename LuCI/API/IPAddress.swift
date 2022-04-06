@@ -14,7 +14,7 @@ class IPAddress {
         static var shared = IPGeolocation()
 
         func get() async throws -> ipgeolocationResponse {
-            let key = UserDefaults.standard.string(forKey: "ipgeolocationApiKey") ?? ""
+            let key = Secrets.ipgeolocationApiKey
             let url = "https://api.ipgeolocation.io/ipgeo?apiKey=\(key)"
             do {
                 return try await getRequest(url, type: ipgeolocationResponse.self, timeout: 5)
