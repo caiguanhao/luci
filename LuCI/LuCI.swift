@@ -60,7 +60,8 @@ class LuCI {
         try await update()
         let staticStatus = try await api.getStaticStatus()
         let s = try await api.getStatus()
-        let group = StatusGroup(name: "System", statuses: [
+        var groups = StatusGroups()
+        groups.append(StatusGroup(name: "System", statuses: [
             Status(key: "Hostname", value: staticStatus.hostname),
             Status(key: "Model", value: staticStatus.model),
             Status(key: "Architecture", value: s.cpuinfo),
@@ -70,9 +71,42 @@ class LuCI {
             Status(key: "Uptime", value: toDuration(s.uptime)),
             Status(key: "Load Average", value: toLoadAvg(s.loadavg)),
             Status(key: "CPU usage (%)", value: s.cpuusage),
-        ])
-        var groups = StatusGroups()
-        groups.append(group)
+        ]))
+        let memcached = Int(s.memcached.trimmingCharacters(in: .whitespacesAndNewlines)) ?? 0
+        let memory = "\((s.memory.free + s.memory.buffered) / 1048576 + (memcached / 1024)) MB / \(s.memory.total / 1048576) MB"
+        groups.append(StatusGroup(name: "Memory", statuses: [
+            Status(key: "Total Available", value: memory),
+            Status(key: "Buffered", value: "\(s.memory.buffered / 1048576) MB / \(s.memory.total / 1048576) MB"),
+        ]))
+        if let wifis = s.wifinets {
+            for wifi in wifis {
+                var items: [Status] = [
+                    Status(key: "Name", value: wifi.name ?? "?"),
+                ]
+                if let networks = wifi.networks {
+                    for network in networks {
+                        items.append(Status(key: "SSID", value: network.ssid ?? "?"))
+                        items.append(Status(key: "Mode", value: network.mode ?? "?"))
+                        items.append(Status(key: "Quality", value: String(format: "%d%%", network.quality ?? 0)))
+                        items.append(Status(key: "Signal", value: String(format: "%d dBm", network.signal ?? 0)))
+                        items.append(Status(key: "Noise", value: String(format: "%d dBm", network.noise ?? 0)))
+                        let channel = String(format: "%d (%@ GHz)", network.channel ?? 0, network.frequency ?? "?")
+                        items.append(Status(key: "Channel", value: channel))
+                        items.append(Status(key: "Bitrate", value: String(format: "%@ Mbit/s", network.bitrate ?? "?")))
+                        let isAssoc = network.bssid != nil && network.bssid != "00:00:00:00:00:00" &&
+                        network.channel != nil && network.channel! > 0 &&
+                        network.disabled == false
+                        if isAssoc {
+                            items.append(Status(key: "BSSID", value: network.bssid ?? "?"))
+                            items.append(Status(key: "Encryption", value: network.encryption ?? "?"))
+                        } else {
+                            items.append(Status(key: "Status", value: "Wireless is disabled or not associated"))
+                        }
+                    }
+                    groups.append(StatusGroup(name: "Wireless", statuses: items))
+                }
+            }
+        }
         return groups
     }
 

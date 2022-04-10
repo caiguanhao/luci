@@ -125,6 +125,7 @@ class API: Request {
         let wan: WAN
         let localtime, cpuusage: String
         let loadavg: [Int]
+        let wifinets: [Wifinet]?
     }
 
     struct Memory: Codable {
@@ -142,6 +143,28 @@ class API: Request {
         let expires, uptime: Int
         let ifname: String
         let dns: [String]
+    }
+
+    struct Wifinet: Codable {
+        let device: String?
+        let networks: [Network]?
+        let name: String?
+        let up: Bool?
+    }
+
+    struct Network: Codable {
+        let signal: Int?
+        let noise: Int?
+        let quality: Int?
+        let link: String?
+        let ssid: String?
+        let mode: String?
+        let channel: Int?
+        let frequency: String?
+        let bitrate: String?
+        let bssid: String?
+        let encryption: String?
+        let disabled: Bool?
     }
 
     internal func mkRequest(
