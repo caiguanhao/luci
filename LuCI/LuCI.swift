@@ -48,6 +48,10 @@ class LuCI {
         var id = UUID()
         let name: String
         let statuses: [Status]
+        var emptyMessage: String? = nil
+        var isEmpty: Bool {
+            return statuses.count == 0
+        }
     }
 
     struct Status: Identifiable, Codable {
@@ -78,6 +82,15 @@ class LuCI {
             Status(key: "Total Available", value: memory),
             Status(key: "Buffered", value: "\(s.memory.buffered / 1048576) MB / \(s.memory.total / 1048576) MB"),
         ]))
+        if let leases = s.leases {
+            var items = [Status]()
+            for lease in leases {
+                let key = "\(lease.ipaddr ?? "?")\n\(lease.hostname?.value ?? "?")"
+                let value = "\(lease.macaddr ?? "?")\n\(toDuration(lease.expires ?? 0))"
+                items.append(Status(key: key, value: value))
+            }
+            groups.append(StatusGroup(name: "DHCP Leases", statuses: items, emptyMessage: "There are no active leases."))
+        }
         if let wifis = s.wifinets {
             for wifi in wifis {
                 var items: [Status] = [

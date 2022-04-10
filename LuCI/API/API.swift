@@ -125,6 +125,7 @@ class API: Request {
         let wan: WAN
         let localtime, cpuusage: String
         let loadavg: [Int]
+        let leases: [Lease]?
         let wifinets: [Wifinet]?
     }
 
@@ -143,6 +144,50 @@ class API: Request {
         let expires, uptime: Int
         let ifname: String
         let dns: [String]
+    }
+
+    struct Lease: Codable {
+        let expires: Int?
+        let macaddr: String?
+        let ipaddr: String?
+        let hostname: StringOrBool?
+    }
+
+    enum StringOrBool: Codable {
+        case bool(Bool)
+        case string(String)
+
+        var value: String? {
+            switch self {
+            case .string(let x):
+                return x
+            default:
+                return nil
+            }
+        }
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            if let x = try? container.decode(Bool.self) {
+                self = .bool(x)
+                return
+            }
+            if let x = try? container.decode(String.self) {
+                self = .string(x)
+                return
+            }
+            throw DecodingError.typeMismatch(StringOrBool.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type"))
+        }
+
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+            switch self {
+            case .bool(let x):
+                try container.encode(x)
+            case .string(let x):
+                try container.encode(x)
+            }
+        }
     }
 
     struct Wifinet: Codable {

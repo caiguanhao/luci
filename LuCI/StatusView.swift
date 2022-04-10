@@ -62,6 +62,9 @@ struct StatusListView: View {
     var body: some View {
         ForEach(groups) { group in
             Section {
+                if group.isEmpty, let msg = group.emptyMessage {
+                    Text(msg).foregroundColor(.secondary)
+                }
                 ForEach(group.statuses) { status in
                     VStack {
                         HStack {
