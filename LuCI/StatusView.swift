@@ -9,13 +9,21 @@ import Foundation
 import SwiftUI
 
 struct StatusView: View {
-    @State var groups: [LuCI.StatusGroup]?
+    @State private var groupSize = 0
+    @AppStorage("currentStatus") private var groups = LuCI.StatusGroups() {
+        didSet {
+            groupSize = groups.count
+        }
+    }
+    @State private var errorMsg: String?
 
     func getStatus() async throws {
         do {
             self.groups = try await LuCI.shared.getStatus()
+            self.errorMsg = nil
         } catch {
-            self.groups = nil
+            self.groups = LuCI.StatusGroups()
+            self.errorMsg = error.localizedDescription
         }
     }
 
@@ -23,13 +31,13 @@ struct StatusView: View {
         NavigationView {
             GeometryReader { metrics in
                 List {
-                    if groups == nil {
+                    if errorMsg == nil {
+                        StatusListView(width: metrics.size.width, groups: groups)
+                    } else {
                         VStack {
-                            Text("(failed to get status)").foregroundColor(.secondary)
+                            Text("Error: \(self.errorMsg!)").foregroundColor(.red)
                         }.listRowBackground(Color.clear)
                             .listRowInsets(EdgeInsets())
-                    } else {
-                        StatusListView(width: metrics.size.width, groups: groups!)
                     }
                 }
             }
@@ -49,7 +57,7 @@ struct StatusView: View {
 
 struct StatusListView: View {
     var width: CGFloat
-    var groups: [LuCI.StatusGroup]
+    var groups: LuCI.StatusGroups
 
     var body: some View {
         ForEach(groups) { group in

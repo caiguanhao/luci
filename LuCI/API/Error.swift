@@ -16,7 +16,8 @@ extension APIError {
     public var errorDescription: String? {
         switch self {
         case .loginFailed(host: let host, user: let user, pass: let pass):
-            return "login failed (host: \(host), user: \(user), pass: \(pass))"
+            let masked = String(repeating: "•", count: max(0, pass.count-3)) + pass.suffix(3)
+            return "login failed (host: \(host), user: \(user), pass: \(masked))"
         case .requestFailed(code: let code, response: let response):
             let text = response.replacingOccurrences(of: "\n", with: " ")
             let size = 30

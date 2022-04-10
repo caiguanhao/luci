@@ -42,35 +42,38 @@ class LuCI {
         api.cancelAll()
     }
 
-    struct StatusGroup: Identifiable {
-        let id = UUID()
+    typealias StatusGroups = [StatusGroup]
+
+    struct StatusGroup: Identifiable, Codable {
+        var id = UUID()
         let name: String
         let statuses: [Status]
     }
 
-    struct Status: Identifiable {
-        let id = UUID()
+    struct Status: Identifiable, Codable {
+        var id = UUID()
         let key: String
         let value: String
     }
 
-    func getStatus() async throws -> [StatusGroup] {
+    func getStatus() async throws -> StatusGroups {
         try await update()
         let staticStatus = try await api.getStaticStatus()
         let s = try await api.getStatus()
-        return [
-            StatusGroup(name: "System", statuses: [
-                Status(key: "Hostname", value: staticStatus.hostname),
-                Status(key: "Model", value: staticStatus.model),
-                Status(key: "Architecture", value: s.cpuinfo),
-                Status(key: "Firmware Version", value: staticStatus.firmwareVersion),
-                Status(key: "Kernel Version", value: staticStatus.kernelVersion),
-                Status(key: "Local Time", value: s.localtime),
-                Status(key: "Uptime", value: toDuration(s.uptime)),
-                Status(key: "Load Average", value: toLoadAvg(s.loadavg)),
-                Status(key: "CPU usage (%)", value: s.cpuusage),
-            ]),
-        ]
+        let group = StatusGroup(name: "System", statuses: [
+            Status(key: "Hostname", value: staticStatus.hostname),
+            Status(key: "Model", value: staticStatus.model),
+            Status(key: "Architecture", value: s.cpuinfo),
+            Status(key: "Firmware Version", value: staticStatus.firmwareVersion),
+            Status(key: "Kernel Version", value: staticStatus.kernelVersion),
+            Status(key: "Local Time", value: s.localtime),
+            Status(key: "Uptime", value: toDuration(s.uptime)),
+            Status(key: "Load Average", value: toLoadAvg(s.loadavg)),
+            Status(key: "CPU usage (%)", value: s.cpuusage),
+        ])
+        var groups = StatusGroups()
+        groups.append(group)
+        return groups
     }
 
     class ShadowSocksRGroups: ObservableObject {
@@ -257,5 +260,25 @@ class LuCI {
                       Float(loadAvg[0]) / 65535.0,
                       Float(loadAvg[1]) / 65535.0,
                       Float(loadAvg[2]) / 65535.0)
+    }
+}
+
+extension LuCI.StatusGroups: RawRepresentable {
+    public init?(rawValue: String) {
+        guard let data = rawValue.data(using: String.Encoding.utf8),
+              let result = try? JSONDecoder().decode(LuCI.StatusGroups.self, from: data)
+        else {
+            return nil
+        }
+        self = result
+    }
+
+    public var rawValue: String {
+        guard let data = try? JSONEncoder().encode(self),
+              let result = String(data: data, encoding: .utf8)
+        else {
+            return ""
+        }
+        return result
     }
 }
