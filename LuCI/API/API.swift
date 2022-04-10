@@ -227,6 +227,9 @@ class API: Request {
                 self.handleResponse(resp) { text in
                     continuation.resume(returning: text)
                 } fail: { err in
+                    if case APIError.requestFailed(let code, _) = err, code == 403 {
+                        self.auth = nil
+                    }
                     continuation.resume(throwing: err)
                 }
             }
