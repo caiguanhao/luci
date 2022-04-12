@@ -25,6 +25,17 @@ struct IPView: View {
     @AppStorage("currentIpAddress") private var current = IPInfo()
     @State var updating: Bool = false
 
+    func update() {
+        Task {
+            updating = true
+            let resp = try? await IPAddress.IPGeolocation.shared.get()
+            if let info = resp?.toIPInfo() {
+                current = info
+            }
+            updating = false
+        }
+    }
+
     var data: [[String]] {
         [
             [ "IP Address", current.ipAddress ?? "-" ],
@@ -45,16 +56,7 @@ struct IPView: View {
                     }
                 }
             }
-            Button(action: {
-                Task {
-                    updating = true
-                    let resp = try? await IPAddress.IPGeolocation.shared.get()
-                    if let info = resp?.toIPInfo() {
-                        current = info
-                    }
-                    updating = false
-                }
-            }, label: {
+            Button(action: update, label: {
                 HStack {
                     Text("Update")
                         .foregroundColor(updating ? .secondary : .green)
@@ -75,6 +77,10 @@ struct IPView: View {
             }
         } header: {
             Text("IP Address")
+        }.onAppear {
+            if current.createdAt == nil || Date().timeIntervalSince(current.createdAt!) > 60 * 60 * 3 {
+                update()
+            }
         }
     }
 }
