@@ -9,15 +9,18 @@ import Foundation
 import SwiftUI
 
 struct SSRView: View {
-    @State var settings: LuCI.ShadowSocksRGroups?
+    @AppStorage("currentSSR") var settings = LuCI.ShadowSocksRGroups()
+    @State private var errorMsg: String?
 
     func getSettings() async throws {
         do {
-            let isOnOptionsPage = self.settings?.isOnOptionsPage ?? false
+            let isOnOptionsPage = self.settings.isOnOptionsPage
             self.settings = try await LuCI.shared.getShadowSocks()
-            self.settings?.isOnOptionsPage = isOnOptionsPage
+            self.settings.isOnOptionsPage = isOnOptionsPage
+            self.errorMsg = nil
         } catch {
-            self.settings = nil
+            self.settings = LuCI.ShadowSocksRGroups()
+            self.errorMsg = error.localizedDescription
         }
     }
 
@@ -25,19 +28,12 @@ struct SSRView: View {
 
     var list: some View {
         Group {
-            if settings == nil {
-                List {
-                    VStack {
-                        Text("(nothing here)").foregroundColor(.secondary)
-                    }.listRowBackground(Color.clear)
-                        .listRowInsets(EdgeInsets())
-                }
-            } else {
-                SSRSettingsView().environmentObject(settings!)
+            if errorMsg == nil {
+                SSRSettingsView().environmentObject(settings)
                     .introspectNavigationController { nav in
                         let bar = nav.navigationBar
                         let hosting = UIHostingController(
-                            rootView: SSRRunningView(running: $running).environmentObject(settings!)
+                            rootView: SSRRunningView(running: $running).environmentObject(settings)
                         )
                         guard let hostingView = hosting.view else { return }
                         bar.addSubview(hostingView)
@@ -51,6 +47,13 @@ struct SSRView: View {
                         ])
 
                     }
+            } else {
+                List {
+                    VStack {
+                        Text("Error: \(self.errorMsg!)").foregroundColor(.red)
+                    }.listRowBackground(Color.clear)
+                        .listRowInsets(EdgeInsets())
+                }
             }
         }
     }
@@ -119,8 +122,8 @@ struct SSRSettingsView: View {
     var body: some View {
         GeometryReader { metrics in
             List {
-                ForEach(settings.groups.indices) { groupIdx in
-                    SSRSettingView(groupIdx: groupIdx, width: metrics.size.width * 0.4)
+                ForEach(settings.groups) { group in
+                    SSRSettingView(group: group, width: metrics.size.width * 0.4)
                 }
             }
         }
@@ -130,12 +133,8 @@ struct SSRSettingsView: View {
 struct SSRSettingView: View {
     @EnvironmentObject var settings: LuCI.ShadowSocksRGroups
 
-    var groupIdx: Int
-    var width: CGFloat
-
-    private var group: LuCI.ShadowSocksRGroup {
-        return settings.groups[groupIdx]
-    }
+    let group: LuCI.ShadowSocksRGroup
+    let width: CGFloat
 
     @State private var saving = false
 
@@ -145,7 +144,7 @@ struct SSRSettingView: View {
                 let setting = group.settings[settingIdx]
                 VStack {
                     NavigationLink(destination: {
-                        SSROptionsView(groupIdx: groupIdx, settingIdx: settingIdx)
+                        SSROptionsView(group: group, settingIdx: settingIdx)
                             .environmentObject(settings)
                     }, label: {
                         HStack {
@@ -167,7 +166,7 @@ struct SSRSettingView: View {
                         saving = true
                         do {
                             let updated = try await LuCI.shared.updateSSRSettings(group)
-                            settings.update(updated)
+                            settings.groups = updated.groups
                         } catch {
                             print(error)
                         }
@@ -190,16 +189,16 @@ struct SSRSettingView: View {
 }
 
 struct SSROptionsView: View {
-    var groupIdx: Int
-    var settingIdx: Int
+    let group: LuCI.ShadowSocksRGroup
+    let settingIdx: Int
 
     @EnvironmentObject var settings: LuCI.ShadowSocksRGroups
     @Environment(\.isPresented) var isPresented
 
     var body: some View {
-        let setting = settings.groups[groupIdx].settings[settingIdx]
+        let setting = group.settings[settingIdx]
         List {
-            SSROptionView(groupIdx: groupIdx,
+            SSROptionView(group: group,
                           settingIdx: settingIdx)
                 .environmentObject(settings)
                 .environmentObject(LuCI.ShadowSocksRServers())
@@ -228,11 +227,11 @@ struct SSROptionView: View {
     @EnvironmentObject var settings: LuCI.ShadowSocksRGroups
     @Environment(\.presentationMode) var presentationMode
 
-    let groupIdx: Int
+    let group: LuCI.ShadowSocksRGroup
     let settingIdx: Int
 
     var setting: LuCI.ShadowSocksRSetting {
-        return settings.groups[groupIdx].settings[settingIdx]
+        return group.settings[settingIdx]
     }
 
     var canTestServers: Bool {
@@ -251,7 +250,7 @@ struct SSROptionView: View {
             ForEach(setting.options.indices, id: \.self) { index in
                 VStack {
                     Button(action: {
-                        settings.groups[groupIdx].settings[settingIdx].selectedIndex = index
+                        settings.setSelected(group: group, settingIndex: settingIdx, index: index)
                         self.presentationMode.wrappedValue.dismiss()
                     }, label: {
                         HStack {

@@ -123,21 +123,60 @@ class LuCI {
         return groups
     }
 
-    class ShadowSocksRGroups: ObservableObject {
+    final class ShadowSocksRGroups: ObservableObject, Codable, RawRepresentable {
         @Published var groups = [ShadowSocksRGroup]()
         @Published var isOnOptionsPage = false
 
-        init(groups: [ShadowSocksRGroup]) {
-            self.groups = groups
+        enum CodingKeys: CodingKey {
+            case groups
+            case isOnOptionsPage
         }
 
-        func update(_ groups: ShadowSocksRGroups) {
-            self.groups = groups.groups
+        func setSelected(group: ShadowSocksRGroup, settingIndex: Int, index: Int) {
+            if let idx = groups.firstIndex(where: { $0.id == group.id }) {
+                self.groups[idx].settings[settingIndex].selectedIndex = index
+            }
+        }
+
+        init() {}
+
+        // Codable
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            groups = try container.decode([ShadowSocksRGroup].self, forKey: .groups)
+            isOnOptionsPage = try container.decode(Bool.self, forKey: .isOnOptionsPage)
+        }
+
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(groups, forKey: .groups)
+            try container.encode(isOnOptionsPage, forKey: .isOnOptionsPage)
+        }
+
+        // RawRepresentable
+
+        init?(rawValue: String) {
+            guard let data = rawValue.data(using: String.Encoding.utf8),
+                  let result = try? JSONDecoder().decode(LuCI.ShadowSocksRGroups.self, from: data)
+            else {
+                return nil
+            }
+            self.groups = result.groups
+        }
+
+        var rawValue: String {
+            guard let data = try? JSONEncoder().encode(self),
+                let result = String(data: data, encoding: .utf8)
+            else {
+                return ""
+            }
+            return result
         }
     }
 
-    struct ShadowSocksRGroup: Identifiable {
-        let id = UUID()
+    struct ShadowSocksRGroup: Identifiable, Codable {
+        var id = UUID()
         let title: String
         var hiddenFields: [String: String]
         var settings: [ShadowSocksRSetting]
@@ -151,8 +190,8 @@ class LuCI {
         }
     }
 
-    struct ShadowSocksRSetting: Identifiable {
-        let id = UUID()
+    struct ShadowSocksRSetting: Identifiable, Codable {
+        var id = UUID()
         let name: String
         let title: String
         let options: [ShadowSocksROption]
@@ -173,8 +212,8 @@ class LuCI {
         }
     }
 
-    struct ShadowSocksROption: Identifiable {
-        let id = UUID()
+    struct ShadowSocksROption: Identifiable, Codable {
+        var id = UUID()
         let title: String
         let value: String
         func asOption() -> API.SSROption {
@@ -200,9 +239,11 @@ class LuCI {
                                                 originalSelectedIndex: item.selected,
                                                 selectedIndex: item.selected))
         }
-        return ShadowSocksRGroups(groups: [
+        let groups = ShadowSocksRGroups()
+        groups.groups = [
             ShadowSocksRGroup(title: "BASIC", hiddenFields: ssrSettings.hiddenFields, settings: settings)
-        ])
+        ]
+        return groups
     }
 
     func updateSSRSettings(_ group: ShadowSocksRGroup) async throws -> ShadowSocksRGroups {
