@@ -90,32 +90,6 @@ struct EditAccountView: View {
 struct SettingsView: View {
     @AppStorage(LuCI.STORAGE_ACCOUNTS) private var accounts = [LuCI.Account]()
     @AppStorage(LuCI.STORAGE_CURRENT_ACCOUNT_ID) private var currentAccountId = ""
-    @State private var mode: action = .normal
-
-    enum action {
-        case normal, edit, move
-        var next: action {
-            switch self {
-            case .normal: return .edit
-            case .edit:   return .move
-            case .move:   return .normal
-            }
-        }
-        var title: String {
-            switch self {
-            case .normal: return "Accounts"
-            case .edit:   return "Edit Account"
-            case .move:   return "Move or Delete Account"
-            }
-        }
-        var description: String {
-            switch self {
-            case .normal: return "Done"
-            case .edit:   return "Edit..."
-            case .move:   return "Move..."
-            }
-        }
-    }
 
     private var selectedAny: Bool {
         for account in accounts {
@@ -134,16 +108,14 @@ struct SettingsView: View {
         if !selectedAny && acc != nil {
             currentAccountId = acc!.id.uuidString
         }
-        if accounts.count == 0 && mode != .normal {
-            mode = .normal
-        }
     }
 
     private func accountItemView(_ account: LuCI.Account) -> some View {
         let image = currentAccountId == account.id.uuidString ? "checkmark.circle.fill" : "circle"
         return HStack {
-            Image(systemName: image).imageScale(.large)
             Text(account.display)
+            Spacer()
+            Image(systemName: image).imageScale(.large)
         }
     }
 
@@ -152,40 +124,12 @@ struct SettingsView: View {
             List {
                 Section {
                     ForEach(accounts) { account in
-                        VStack {
-                            switch mode {
-                            case .normal:
-                                Button {
-                                    currentAccountId = account.id.uuidString
-                                } label: {
-                                    accountItemView(account)
-                                }.foregroundColor(.primary).swipeActions {}
-                            case .edit:
-                                NavigationLink(destination: {
-                                    EditAccountView(account: account, onSave: { newAccount in
-                                        if let idx = accounts.firstIndex(where: { $0.id == account.id }) {
-                                            accounts[idx] = newAccount
-                                            setCurrent(newAccount)
-                                        }
-                                    }, onDelete: {
-                                        if let idx = accounts.firstIndex(where: { $0.id == account.id }) {
-                                            accounts.remove(at: idx)
-                                            setCurrent()
-                                        }
-                                    }).navigationTitle("Edit Account")
-                                }, label: {
-                                    accountItemView(account)
-                                }).swipeActions {}
-                            case .move:
-                                Button {
-                                } label: {
-                                    accountItemView(account)
-                                }.foregroundColor(.primary)
-                            }
-                        }
+                        Button {
+                            currentAccountId = account.id.uuidString
+                        } label: {
+                            accountItemView(account)
+                        }.foregroundColor(.primary).swipeActions {}
                     }
-                    .onMove { accounts.move(fromOffsets: $0, toOffset: $1) }
-                    .onDelete { accounts.remove(atOffsets: $0); setCurrent() }
                     NavigationLink(destination: {
                         EditAccountView(onSave: { account in
                             accounts.append(account)
@@ -196,21 +140,47 @@ struct SettingsView: View {
                     })
                 } header: {
                     HStack {
-                        Text(mode.title)
+                        Text("Accounts")
                         if accounts.count > 0 {
                             Spacer()
-                            Button {
-                                mode = mode.next
-                            } label: {
-                                Text(mode.next.description)
-                            }
+                            editAccountsView
                         }
                     }
                 }
             }.navigationTitle("Settings")
-                .environment(\.editMode, .constant(mode == .move ? .active : .inactive))
-                .animation(.linear, value: mode == .move)
         }.navigationViewStyle(.stack)
+    }
+
+    var editAccountsView: some View {
+        NavigationLink(destination: {
+            List {
+                ForEach(accounts) { account in
+                    NavigationLink(destination: {
+                        EditAccountView(account: account, onSave: { newAccount in
+                            if let idx = accounts.firstIndex(where: { $0.id == account.id }) {
+                                accounts[idx] = newAccount
+                                setCurrent(newAccount)
+                            }
+                        }, onDelete: {
+                            if let idx = accounts.firstIndex(where: { $0.id == account.id }) {
+                                accounts.remove(at: idx)
+                                setCurrent()
+                            }
+                        }).navigationTitle("Edit Account")
+                    }, label: {
+                        accountItemView(account)
+                    })
+                }
+                .onMove { accounts.move(fromOffsets: $0, toOffset: $1) }
+                .onDelete { accounts.remove(atOffsets: $0); setCurrent() }
+            }
+            .navigationTitle("Edit Accounts")
+            .toolbar {
+                EditButton()
+            }
+        }, label: {
+            Text("Edit")
+        })
     }
 }
 
