@@ -13,15 +13,33 @@ class LuCI {
     static let DEFAULT_USER = "root"
     static let DEFAULT_PASS = "password"
 
-    static let STORAGE_HOST = "host"
-    static let STORAGE_USER = "user"
-    static let STORAGE_PASS = "pass"
+    static let STORAGE_ACCOUNTS = "accounts"
+    static let STORAGE_CURRENT_ACCOUNT_ID = "currentAccountId"
 
     static func HUP() -> (host: String, user: String, pass: String) {
-        let host: String = UserDefaults.standard.string(forKey: LuCI.STORAGE_HOST) ?? LuCI.DEFAULT_HOST
-        let user: String = UserDefaults.standard.string(forKey: LuCI.STORAGE_USER) ?? LuCI.DEFAULT_USER
-        let pass: String = UserDefaults.standard.string(forKey: LuCI.STORAGE_PASS) ?? LuCI.DEFAULT_PASS
-        return (host, user, pass)
+        if let data = UserDefaults.standard.string(forKey: LuCI.STORAGE_ACCOUNTS)?.data(using: .utf8) {
+            let accounts = try? JSONDecoder().decode([Account].self, from: data)
+            let id = UserDefaults.standard.string(forKey: LuCI.STORAGE_CURRENT_ACCOUNT_ID) ?? ""
+            if let account = accounts?.first(where: { $0.id.uuidString == id }) {
+                return (account.host, account.user, account.pass)
+            }
+        }
+        return (LuCI.DEFAULT_HOST, LuCI.DEFAULT_USER, LuCI.DEFAULT_PASS)
+    }
+
+    struct Account: Identifiable, Codable, Equatable {
+        var id = UUID()
+        let name: String
+        let host: String
+        let user: String
+        let pass: String
+        var display: String {
+            if name.count > 0 {
+                return name
+            }
+            let masked = String(repeating: "•", count: max(0, pass.count-3)) + pass.suffix(3)
+            return "\(user):\(masked)@\(host)"
+        }
     }
 
     static var shared = LuCI()
@@ -42,8 +60,6 @@ class LuCI {
         api.cancelAll()
     }
 
-    typealias StatusGroups = [StatusGroup]
-
     struct StatusGroup: Identifiable, Codable {
         var id = UUID()
         let name: String
@@ -60,11 +76,11 @@ class LuCI {
         let value: String
     }
 
-    func getStatus() async throws -> StatusGroups {
+    func getStatus() async throws -> [StatusGroup] {
         try await update()
         let staticStatus = try await api.getStaticStatus()
         let s = try await api.getStatus()
-        var groups = StatusGroups()
+        var groups = [StatusGroup]()
         groups.append(StatusGroup(name: "System", statuses: [
             Status(key: "Hostname", value: staticStatus.hostname),
             Status(key: "Model", value: staticStatus.model),
@@ -348,25 +364,5 @@ class LuCI {
                       Float(loadAvg[0]) / 65535.0,
                       Float(loadAvg[1]) / 65535.0,
                       Float(loadAvg[2]) / 65535.0)
-    }
-}
-
-extension LuCI.StatusGroups: RawRepresentable {
-    public init?(rawValue: String) {
-        guard let data = rawValue.data(using: String.Encoding.utf8),
-              let result = try? JSONDecoder().decode(LuCI.StatusGroups.self, from: data)
-        else {
-            return nil
-        }
-        self = result
-    }
-
-    public var rawValue: String {
-        guard let data = try? JSONEncoder().encode(self),
-              let result = String(data: data, encoding: .utf8)
-        else {
-            return ""
-        }
-        return result
     }
 }

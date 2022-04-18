@@ -10,7 +10,7 @@ import SwiftUI
 
 struct StatusView: View {
     @State private var groupSize = 0
-    @AppStorage("currentStatus") private var groups = LuCI.StatusGroups() {
+    @AppStorage("currentStatus") private var groups = [LuCI.StatusGroup]() {
         didSet {
             groupSize = groups.count
         }
@@ -22,7 +22,7 @@ struct StatusView: View {
             self.groups = try await LuCI.shared.getStatus()
             self.errorMsg = nil
         } catch {
-            self.groups = LuCI.StatusGroups()
+            self.groups = [LuCI.StatusGroup]()
             self.errorMsg = error.localizedDescription
         }
     }
@@ -57,7 +57,7 @@ struct StatusView: View {
 
 struct StatusListView: View {
     var width: CGFloat
-    var groups: LuCI.StatusGroups
+    var groups: [LuCI.StatusGroup]
 
     var body: some View {
         ForEach(groups) { group in
