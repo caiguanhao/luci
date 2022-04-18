@@ -30,6 +30,7 @@ struct SSRView: View {
         Group {
             if errorMsg == nil {
                 SSRSettingsView().environmentObject(settings)
+                    #if os(iOS)
                     .introspectNavigationController { nav in
                         let bar = nav.navigationBar
                         let hosting = UIHostingController(
@@ -47,6 +48,7 @@ struct SSRView: View {
                         ])
 
                     }
+                    #endif
             } else {
                 List {
                     VStack {
@@ -58,12 +60,20 @@ struct SSRView: View {
         }
     }
 
+    #if os(iOS)
     @State private var lastHostingView: UIView?
+    #endif
 
     var body: some View {
         NavigationView {
             list
+                #if os(iOS)
                 .navigationTitle("SSR")
+                #elseif os(watchOS)
+                .navigationTitle {
+                    SSRRunningView(running: $running).environmentObject(settings)
+                }
+                #endif
                 .refreshable {
                     try? await getSettings()
                 }
@@ -96,9 +106,16 @@ struct SSRRunningView: View {
         }
     }
 
+    #if os(iOS)
+    private let prefix = ""
+    #elseif os(watchOS)
+    private let prefix = "SSR: "
+    #endif
+
     var body: some View {
-        Text(running ? "Running" : "Stopped")
+        Text(prefix + (running ? "Running" : "Stopped"))
             .foregroundColor(running ? .green : .red)
+            #if os(iOS)
             .frame(width: 200, alignment: .trailing)
             .opacity(settings.isOnOptionsPage ? 0 : 1)
             .onChange(of: settings.isOnOptionsPage) { onOptionsPage in
@@ -107,6 +124,15 @@ struct SSRRunningView: View {
                     start()
                 }
             }
+            #elseif os(watchOS)
+            .frame(
+                minWidth: 0,
+                maxWidth: .infinity,
+                minHeight: 0,
+                maxHeight: .infinity,
+                alignment: .leading
+            )
+            #endif
             .onAppear {
                 start()
             }
@@ -178,6 +204,10 @@ struct SSRSettingView: View {
                         if saving {
                             Spacer()
                             ProgressView()
+                                #if os(watchOS)
+                                .frame(width: 20)
+                                .scaleEffect(0.5)
+                                #endif
                         }
                     }
                 }).disabled(saving)
@@ -207,11 +237,13 @@ struct SSROptionsView: View {
         .onDisappear {
             LuCI.shared.cancelAll()
         }
+        #if os(iOS)
         .introspectTableView {
             // smaller section spacing
             $0.sectionHeaderHeight = 0
             $0.sectionHeaderTopPadding = 0
         }
+        #endif
         .onAppear {
             if isPresented {
                 settings.isOnOptionsPage = true
@@ -333,6 +365,10 @@ struct SSRTestConnView: View {
                     if testing {
                         Spacer()
                         ProgressView()
+                            #if os(watchOS)
+                            .frame(width: 20)
+                            .scaleEffect(0.5)
+                            #endif
                     }
                 }
             })
@@ -378,14 +414,29 @@ struct SSRLatencyView: View {
         return .red
     }
 
+    #if os(watchOS)
+    private let size: CGFloat = 40
+    #else
+    private let size: CGFloat = 60
+    #endif
+
     var body: some View {
         if self.server != nil && self.server!.testing {
-            ProgressView().frame(width: 60, alignment: .trailing)
+            #if os(watchOS)
+            HStack {
+                ProgressView()
+                    .scaleEffect(0.5)
+                    .frame(width: 20)
+            }.frame(width: size, alignment: .trailing)
+            #else
+            ProgressView()
+                .frame(width: size, alignment: .trailing)
+            #endif
         } else {
             Text(text)
                 .foregroundColor(color)
                 .font(.system(size: 12))
-                .frame(width: 60, alignment: .trailing)
+                .frame(width: size, alignment: .trailing)
         }
     }
 }

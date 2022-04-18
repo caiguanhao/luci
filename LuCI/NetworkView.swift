@@ -71,10 +71,12 @@ struct IPView: View {
                     }
                 }
             }).disabled(updating)
+            #if os(iOS)
             if let name = current.ipAddress, let lat = current.latitude, let lng = current.longitude {
                 IPMapView(name: name, latitude: lat, longitude: lng, updating: $updating)
                     .listRowInsets(EdgeInsets())
             }
+            #endif
         } header: {
             Text("IP Address")
         }.onAppear {
@@ -94,6 +96,7 @@ struct Coord2D: Equatable {
     }
 }
 
+#if os(iOS)
 struct IPMapView: View {
     var name: String
     var latitude: String
@@ -172,3 +175,4 @@ struct IPMapView: View {
         }
     }
 }
+#endif

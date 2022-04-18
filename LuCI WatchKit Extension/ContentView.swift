@@ -8,9 +8,23 @@
 import SwiftUI
 
 struct ContentView: View {
+    @AppStorage("tabSelection") private var selection: Int = 1
+
     var body: some View {
-        Text("Hello, World!")
-            .padding()
+        TabView(selection: $selection) {
+            StatusView().tabItem {
+                Text("Status")
+            }.tag(1)
+            SSRView().tabItem {
+                Text("SSR")
+            }.tag(2)
+            NetworkView().tabItem {
+                Text("Network")
+            }.tag(3)
+            SettingsView().tabItem {
+                Text("Settings")
+            }.tag(4)
+        }
     }
 }
 

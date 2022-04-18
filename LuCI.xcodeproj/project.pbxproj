@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DA0D64B7280D846700787224 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DABE425827E5DDE600980CC6 /* SettingsView.swift */; };
+		DA0D64B8280D898900787224 /* NetworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5249F627FAEE8100B65856 /* NetworkView.swift */; };
+		DA0D64B9280D8AE600787224 /* SSRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8074F427F72BB500948B3D /* SSRView.swift */; };
 		DA15D63627D8E342002D3D58 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = DA15D63527D8E342002D3D58 /* Alamofire */; };
 		DA15D63827D8E3AF002D3D58 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA15D63727D8E3AF002D3D58 /* API.swift */; };
 		DA195FAE27D792B300CF27E2 /* LuCIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA195FAD27D792B300CF27E2 /* LuCIApp.swift */; };
@@ -31,6 +34,18 @@
 		DA5249F527FAEB8000B65856 /* IPInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5249F427FAEB8000B65856 /* IPInfo.swift */; };
 		DA5249F727FAEE8100B65856 /* NetworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5249F627FAEE8100B65856 /* NetworkView.swift */; };
 		DA553BCE280D0E3200F19FCC /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA553BCD280D0E3200F19FCC /* Extension.swift */; };
+		DA553BCF280D755600F19FCC /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA553BCD280D0E3200F19FCC /* Extension.swift */; };
+		DA553BD0280D759800F19FCC /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5249F127F8631200B65856 /* Request.swift */; };
+		DA553BD1280D759800F19FCC /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA15D63727D8E3AF002D3D58 /* API.swift */; };
+		DA553BD2280D759800F19FCC /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8766D027EF43D7000C34C1 /* Error.swift */; };
+		DA553BD3280D759800F19FCC /* ShadowSocksR.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8766D227EF8146000C34C1 /* ShadowSocksR.swift */; };
+		DA553BD4280D759800F19FCC /* IPInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5249F427FAEB8000B65856 /* IPInfo.swift */; };
+		DA553BD5280D759800F19FCC /* IPAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5249ED27F84AE000B65856 /* IPAddress.swift */; };
+		DA553BD6280D75AA00F19FCC /* LuCI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DABE425627E5CBDB00980CC6 /* LuCI.swift */; };
+		DA553BD9280D75AA00F19FCC /* StatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5249EB27F8388A00B65856 /* StatusView.swift */; };
+		DA553BDD280D75D300F19FCC /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = DA553BDC280D75D300F19FCC /* Alamofire */; };
+		DA553BDF280D75D300F19FCC /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = DA553BDE280D75D300F19FCC /* Fuzi */; };
+		DA553BE2280D767D00F19FCC /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA263B1E27FE0F0E009D1F6E /* Secrets.swift */; };
 		DA8074F527F72BB500948B3D /* SSRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8074F427F72BB500948B3D /* SSRView.swift */; };
 		DA8766D127EF43D7000C34C1 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8766D027EF43D7000C34C1 /* Error.swift */; };
 		DA8766D327EF8146000C34C1 /* ShadowSocksR.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8766D227EF8146000C34C1 /* ShadowSocksR.swift */; };
@@ -139,6 +154,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA553BDF280D75D300F19FCC /* Fuzi in Frameworks */,
+				DA553BDD280D75D300F19FCC /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -162,6 +179,7 @@
 				DA263B0A27FDEA73009D1F6E /* Scripts */,
 				DA263B2027FE0FF8009D1F6E /* README.md */,
 				DA195FAB27D792B300CF27E2 /* Products */,
+				DA553BDB280D75D300F19FCC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -271,6 +289,13 @@
 			path = Generated;
 			sourceTree = "<group>";
 		};
+		DA553BDB280D75D300F19FCC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -329,6 +354,10 @@
 			dependencies = (
 			);
 			name = "LuCI WatchKit Extension";
+			packageProductDependencies = (
+				DA553BDC280D75D300F19FCC /* Alamofire */,
+				DA553BDE280D75D300F19FCC /* Fuzi */,
+			);
 			productName = "LuCI WatchKit Extension";
 			productReference = DA195FC327D792B600CF27E2 /* LuCI WatchKit Extension.appex */;
 			productType = "com.apple.product-type.watchkit2-extension";
@@ -487,6 +516,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA0D64B9280D8AE600787224 /* SSRView.swift in Sources */,
+				DA0D64B8280D898900787224 /* NetworkView.swift in Sources */,
+				DA0D64B7280D846700787224 /* SettingsView.swift in Sources */,
+				DA553BE2280D767D00F19FCC /* Secrets.swift in Sources */,
+				DA553BD6280D75AA00F19FCC /* LuCI.swift in Sources */,
+				DA553BD9280D75AA00F19FCC /* StatusView.swift in Sources */,
+				DA553BD0280D759800F19FCC /* Request.swift in Sources */,
+				DA553BD1280D759800F19FCC /* API.swift in Sources */,
+				DA553BD2280D759800F19FCC /* Error.swift in Sources */,
+				DA553BD3280D759800F19FCC /* ShadowSocksR.swift in Sources */,
+				DA553BD4280D759800F19FCC /* IPInfo.swift in Sources */,
+				DA553BD5280D759800F19FCC /* IPAddress.swift in Sources */,
+				DA553BCF280D755600F19FCC /* Extension.swift in Sources */,
 				DA195FCB27D792B600CF27E2 /* LuCIApp.swift in Sources */,
 				DA195FC927D792B600CF27E2 /* ContentView.swift in Sources */,
 				DA195FCD27D792B600CF27E2 /* ComplicationController.swift in Sources */,
@@ -943,6 +985,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DA1E45D427ECDB2A00053BC8 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
 			productName = Introspect;
+		};
+		DA553BDC280D75D300F19FCC /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DA15D63427D8E342002D3D58 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		DA553BDE280D75D300F19FCC /* Fuzi */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DABE425327E57DB600980CC6 /* XCRemoteSwiftPackageReference "Fuzi" */;
+			productName = Fuzi;
 		};
 		DABE425427E57DB600980CC6 /* Fuzi */ = {
 			isa = XCSwiftPackageProductDependency;

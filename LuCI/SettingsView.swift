@@ -7,7 +7,10 @@
 
 import Foundation
 import SwiftUI
+
+#if os(iOS)
 import Introspect
+#endif
 
 struct EditAccountView: View {
     var account: LuCI.Account?
@@ -21,6 +24,13 @@ struct EditAccountView: View {
     @State private var user: String = LuCI.DEFAULT_USER
     @State private var pass: String = LuCI.DEFAULT_PASS
 
+    var saveButton: some View {
+        Button("Save") {
+            onSave?(LuCI.Account(name: name, host: host, user: user, pass: pass))
+            presentationMode.wrappedValue.dismiss()
+        }
+    }
+
     var body: some View {
         GeometryReader { metrics in
             List {
@@ -29,33 +39,46 @@ struct EditAccountView: View {
                         Text("Name")
                         Spacer()
                         TextField("Name", text: $name)
-                            .introspectTextField { $0.clearButtonMode = .whileEditing }
                             .frame(maxWidth: metrics.size.width * 0.5)
+                            #if os(iOS)
+                            .introspectTextField { $0.clearButtonMode = .whileEditing }
+                            #endif
                     }
                     HStack {
                         Text("Host")
                         Spacer()
                         TextField("Host", text: $host)
-                            .introspectTextField { $0.clearButtonMode = .whileEditing }
                             .frame(maxWidth: metrics.size.width * 0.5)
+                            #if os(iOS)
+                            .introspectTextField { $0.clearButtonMode = .whileEditing }
+                            #endif
                     }
                     HStack {
                         Text("User")
                         Spacer()
                         TextField("User", text: $user)
-                            .introspectTextField { $0.clearButtonMode = .whileEditing }
                             .disableAutocorrection(true)
                             .textInputAutocapitalization(.never)
                             .frame(maxWidth: metrics.size.width * 0.5)
+                            #if os(iOS)
+                            .introspectTextField { $0.clearButtonMode = .whileEditing }
+                            #endif
                     }
                     HStack {
                         Text("Password")
                         Spacer()
                         SecureField("Password", text: $pass)
-                            .introspectTextField { $0.clearButtonMode = .whileEditing }
                             .frame(maxWidth: metrics.size.width * 0.5)
+                            #if os(iOS)
+                            .introspectTextField { $0.clearButtonMode = .whileEditing }
+                            #endif
                     }
                 }
+                #if os(watchOS)
+                Section {
+                    saveButton.foregroundColor(.green)
+                }
+                #endif
                 if account != nil {
                     Section {
                         Button {
@@ -76,14 +99,13 @@ struct EditAccountView: View {
                 pass = acc.pass
             }
         }
+        #if os(iOS)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Save") {
-                    onSave?(LuCI.Account(name: name, host: host, user: user, pass: pass))
-                    presentationMode.wrappedValue.dismiss()
-                }
+                saveButton
             }
         }
+        #endif
     }
 }
 
@@ -138,13 +160,20 @@ struct SettingsView: View {
                     }, label: {
                         Text("Add New").foregroundColor(.green)
                     })
+                    #if os(watchOS)
+                    if accounts.count > 0 {
+                        editAccountsView
+                    }
+                    #endif
                 } header: {
                     HStack {
                         Text("Accounts")
+                        #if os(iOS)
                         if accounts.count > 0 {
                             Spacer()
                             editAccountsView
                         }
+                        #endif
                     }
                 }
             }.navigationTitle("Settings")
@@ -175,11 +204,17 @@ struct SettingsView: View {
                 .onDelete { accounts.remove(atOffsets: $0); setCurrent() }
             }
             .navigationTitle("Edit Accounts")
+            #if os(iOS)
             .toolbar {
                 EditButton()
             }
+            #endif
         }, label: {
+            #if os(watchOS)
+            Text("Edit Accounts").foregroundColor(.green)
+            #else
             Text("Edit")
+            #endif
         })
     }
 }
