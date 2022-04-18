@@ -29,7 +29,16 @@ struct EditAccountView: View {
             onSave?(LuCI.Account(name: name, host: host, user: user, pass: pass))
             presentationMode.wrappedValue.dismiss()
         }
+        #if os(watchOS)
+        .font(.system(size: 13))
+        #endif
     }
+
+    #if os(watchOS)
+    private let factor = 0.6
+    #else
+    private let factor = 0.5
+    #endif
 
     var body: some View {
         GeometryReader { metrics in
@@ -37,39 +46,59 @@ struct EditAccountView: View {
                 Section {
                     HStack {
                         Text("Name")
+                            #if os(watchOS)
+                            .font(.system(size: 13))
+                            #endif
                         Spacer()
                         TextField("Name", text: $name)
-                            .frame(maxWidth: metrics.size.width * 0.5)
-                            #if os(iOS)
+                            .frame(maxWidth: metrics.size.width * factor)
+                            #if os(watchOS)
+                            .scaleEffect(13.0/16.0)
+                            #elseif os(iOS)
                             .introspectTextField { $0.clearButtonMode = .whileEditing }
                             #endif
                     }
                     HStack {
                         Text("Host")
+                            #if os(watchOS)
+                            .font(.system(size: 13))
+                            #endif
                         Spacer()
                         TextField("Host", text: $host)
-                            .frame(maxWidth: metrics.size.width * 0.5)
-                            #if os(iOS)
+                            .frame(maxWidth: metrics.size.width * factor)
+                            #if os(watchOS)
+                            .scaleEffect(13.0/16.0)
+                            #elseif os(iOS)
                             .introspectTextField { $0.clearButtonMode = .whileEditing }
                             #endif
                     }
                     HStack {
                         Text("User")
+                            #if os(watchOS)
+                            .font(.system(size: 13))
+                            #endif
                         Spacer()
                         TextField("User", text: $user)
                             .disableAutocorrection(true)
                             .textInputAutocapitalization(.never)
-                            .frame(maxWidth: metrics.size.width * 0.5)
-                            #if os(iOS)
+                            .frame(maxWidth: metrics.size.width * factor)
+                            #if os(watchOS)
+                            .scaleEffect(13.0/16.0)
+                            #elseif os(iOS)
                             .introspectTextField { $0.clearButtonMode = .whileEditing }
                             #endif
                     }
                     HStack {
                         Text("Password")
+                            #if os(watchOS)
+                            .font(.system(size: 13))
+                            #endif
                         Spacer()
                         SecureField("Password", text: $pass)
-                            .frame(maxWidth: metrics.size.width * 0.5)
-                            #if os(iOS)
+                            .frame(maxWidth: metrics.size.width * factor)
+                            #if os(watchOS)
+                            .scaleEffect(13.0/16.0)
+                            #elseif os(iOS)
                             .introspectTextField { $0.clearButtonMode = .whileEditing }
                             #endif
                     }
@@ -86,6 +115,9 @@ struct EditAccountView: View {
                             presentationMode.wrappedValue.dismiss()
                         } label: {
                             Text("Delete").foregroundColor(.red)
+                                #if os(watchOS)
+                                .font(.system(size: 13))
+                                #endif
                         }
                     }
                 }
@@ -136,8 +168,16 @@ struct SettingsView: View {
         let image = currentAccountId == account.id.uuidString ? "checkmark.circle.fill" : "circle"
         return HStack {
             Text(account.display)
+                #if os(watchOS)
+                .font(.system(size: 13))
+                #endif
             Spacer()
-            Image(systemName: image).imageScale(.large)
+            Image(systemName: image)
+                #if os(watchOS)
+                .imageScale(.medium)
+                #else
+                .imageScale(.large)
+                #endif
         }
     }
 
@@ -159,6 +199,10 @@ struct SettingsView: View {
                         }).navigationTitle("New Account")
                     }, label: {
                         Text("Add New").foregroundColor(.green)
+                            #if os(watchOS)
+                            .font(.system(size: 13))
+                            #endif
+
                     })
                     #if os(watchOS)
                     if accounts.count > 0 {
@@ -212,18 +256,10 @@ struct SettingsView: View {
         }, label: {
             #if os(watchOS)
             Text("Edit Accounts").foregroundColor(.green)
+                .font(.system(size: 13))
             #else
             Text("Edit")
             #endif
         })
     }
-}
-
-func BetterText(_ content: String, width: CGFloat) -> some View {
-    return Text(content)
-        .multilineTextAlignment(.trailing)
-        .frame(width: width, alignment: .trailing)
-        .lineLimit(2)
-        .minimumScaleFactor(0.5)
-        .foregroundStyle(.secondary)
 }

@@ -175,13 +175,22 @@ struct SSRSettingView: View {
                     }, label: {
                         HStack {
                             Text(setting.title)
+                                #if os(watchOS)
+                                .font(.system(size: 13))
+                                #endif
                             Spacer()
                             Text(setting.valueText)
                                 .multilineTextAlignment(.trailing)
                                 .frame(width: width, alignment: .trailing)
+                                .foregroundStyle(.secondary)
+                                #if os(watchOS)
+                                .font(.system(size: 13))
+                                .minimumScaleFactor(0.6)
+                                .lineLimit(3)
+                                #else
                                 .lineLimit(2)
                                 .minimumScaleFactor(0.5)
-                                .foregroundStyle(.secondary)
+                                #endif
                         }
                     })
                 }
@@ -288,6 +297,10 @@ struct SSROptionView: View {
                         HStack {
                             Text(setting.options[index].title)
                                 .foregroundColor(index == setting.selectedIndex ? .accentColor : .primary)
+                                #if os(watchOS)
+                                .font(.system(size: 13))
+                                #endif
+
                             if canTestServers && testStarted {
                                 Spacer()
                                 SSRLatencyView(id: setting.options[index].value)

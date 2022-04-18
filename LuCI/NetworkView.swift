@@ -12,8 +12,10 @@ import MapKit
 struct NetworkView: View {
     var body: some View {
         NavigationView {
-            List {
-                IPView()
+            GeometryReader { metrics in
+                List {
+                    IPView(width: metrics.size.width)
+                }
             }
             .navigationTitle("Network")
         }
@@ -22,6 +24,8 @@ struct NetworkView: View {
 }
 
 struct IPView: View {
+    var width: CGFloat
+
     @AppStorage("currentIpAddress") private var current = IPInfo()
     @State var updating: Bool = false
 
@@ -51,8 +55,22 @@ struct IPView: View {
                 VStack {
                     HStack {
                         Text(line[0])
+                            #if os(watchOS)
+                            .font(.system(size: 13))
+                            #endif
                         Spacer()
-                        Text(line[1]).foregroundColor(.secondary)
+                        Text(line[1])
+                            .multilineTextAlignment(.trailing)
+                            .frame(width: width * 0.4, alignment: .trailing)
+                            .foregroundStyle(.secondary)
+                            #if os(watchOS)
+                            .font(.system(size: 13))
+                            .minimumScaleFactor(0.6)
+                            .lineLimit(3)
+                            #else
+                            .lineLimit(2)
+                            .minimumScaleFactor(0.5)
+                            #endif
                     }
                 }
             }
@@ -60,6 +78,9 @@ struct IPView: View {
                 HStack {
                     Text("Update")
                         .foregroundColor(updating ? .secondary : .green)
+                        #if os(watchOS)
+                        .font(.system(size: 13))
+                        #endif
                     if updating {
                         Spacer()
                         ProgressView()

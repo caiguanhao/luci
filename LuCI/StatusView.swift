@@ -69,13 +69,22 @@ struct StatusListView: View {
                     VStack {
                         HStack {
                             Text(status.key)
+                                #if os(watchOS)
+                                .font(.system(size: 13))
+                                #endif
                             Spacer()
                             Text(status.value)
                                 .multilineTextAlignment(.trailing)
                                 .frame(width: width * 0.5, alignment: .trailing)
+                                .foregroundStyle(.secondary)
+                                #if os(watchOS)
+                                .font(.system(size: 13))
+                                .minimumScaleFactor(0.6)
+                                .lineLimit(3)
+                                #else
                                 .lineLimit(2)
                                 .minimumScaleFactor(0.5)
-                                .foregroundStyle(.secondary)
+                                #endif
                         }
                     }
                 }
