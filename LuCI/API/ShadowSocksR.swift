@@ -111,7 +111,7 @@ extension API {
         return response == "OK"
     }
 
-    struct Server {
+    struct Server: Codable {
         let id: String
         let type: String
         let name: String

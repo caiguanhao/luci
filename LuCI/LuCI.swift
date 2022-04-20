@@ -284,7 +284,11 @@ class LuCI {
     }
 
     class ShadowSocksRServers: ObservableObject, CustomStringConvertible {
-        @Published var servers = [ShadowSocksRServer]()
+        @Published var servers: [ShadowSocksRServer]
+
+        init(_ servers: [ShadowSocksRServer]) {
+            self.servers = servers
+        }
 
         var count: Int {
             return self.servers.count
@@ -313,7 +317,7 @@ class LuCI {
         }
     }
 
-    class ShadowSocksRServer: CustomStringConvertible {
+    class ShadowSocksRServer: CustomStringConvertible, Codable {
         let server: API.Server
         var testing: Bool = false
         var socketConnected: Bool?

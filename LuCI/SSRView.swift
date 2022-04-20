@@ -234,13 +234,15 @@ struct SSROptionsView: View {
     @EnvironmentObject var settings: LuCI.ShadowSocksRGroups
     @Environment(\.isPresented) var isPresented
 
+    @AppStorage("serverNodes") private var serverNodes = [LuCI.ShadowSocksRServer]()
+
     var body: some View {
         let setting = group.settings[settingIdx]
         List {
             SSROptionView(group: group,
                           settingIdx: settingIdx)
                 .environmentObject(settings)
-                .environmentObject(LuCI.ShadowSocksRServers())
+                .environmentObject(LuCI.ShadowSocksRServers(serverNodes))
         }
         .navigationTitle(setting.title)
         .onDisappear {
@@ -309,6 +311,10 @@ struct SSROptionView: View {
                     })
                 }
             }
+        }.onAppear {
+            if self.servers.servers.contains(where: { $0.pingLatency != nil }) {
+                testStarted = true
+            }
         }
     }
 }
@@ -369,6 +375,7 @@ struct SSRTestConnView: View {
                             }
                         }
                     }
+                    UserDefaults.standard.set(srvs.rawValue, forKey: "serverNodes")
                     testing = false
                 }
             }, label: {
