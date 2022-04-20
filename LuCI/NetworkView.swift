@@ -84,6 +84,10 @@ struct IPView: View {
                     if updating {
                         Spacer()
                         ProgressView()
+                            #if os(watchOS)
+                            .frame(width: 20)
+                            .scaleEffect(0.5)
+                            #endif
                     } else if current.createdAt != nil {
                         Spacer()
                         Text("Last updated at \(current.createdAtString!)")
