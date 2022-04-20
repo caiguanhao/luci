@@ -33,9 +33,6 @@ struct EditAccountView: View {
             onSave?(LuCI.Account(name: name, host: host, user: user, pass: pass))
             presentationMode.wrappedValue.dismiss()
         }
-        #if os(watchOS)
-        .font(.system(size: 13))
-        #endif
     }
 
     #if os(watchOS)
@@ -119,9 +116,6 @@ struct EditAccountView: View {
                             presentationMode.wrappedValue.dismiss()
                         } label: {
                             Text("Delete").foregroundColor(.red)
-                                #if os(watchOS)
-                                .font(.system(size: 13))
-                                #endif
                         }
                     }
                 }
@@ -203,9 +197,6 @@ struct SettingsView: View {
                         }).navigationTitle("New Account")
                     }, label: {
                         Text("Add New").foregroundColor(.green)
-                            #if os(watchOS)
-                            .font(.system(size: 13))
-                            #endif
 
                     })
                     #if os(watchOS)
@@ -265,7 +256,6 @@ struct SettingsView: View {
         }, label: {
             #if os(watchOS)
             Text("Edit Accounts").foregroundColor(.green)
-                .font(.system(size: 13))
             #else
             Text("Edit")
             #endif
