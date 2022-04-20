@@ -12,6 +12,9 @@ struct LuCIApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .onAppear {
+                    WatchSession.shared.watchUserDefaults()
+                }
         }
     }
 }

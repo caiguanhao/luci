@@ -10,6 +10,8 @@
 		DA0D64B7280D846700787224 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DABE425827E5DDE600980CC6 /* SettingsView.swift */; };
 		DA0D64B8280D898900787224 /* NetworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5249F627FAEE8100B65856 /* NetworkView.swift */; };
 		DA0D64B9280D8AE600787224 /* SSRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8074F427F72BB500948B3D /* SSRView.swift */; };
+		DA13E32C280E5EA400C8589C /* WatchSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA13E32B280E5EA400C8589C /* WatchSession.swift */; };
+		DA13E32D280E5EA400C8589C /* WatchSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA13E32B280E5EA400C8589C /* WatchSession.swift */; };
 		DA15D63627D8E342002D3D58 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = DA15D63527D8E342002D3D58 /* Alamofire */; };
 		DA15D63827D8E3AF002D3D58 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA15D63727D8E3AF002D3D58 /* API.swift */; };
 		DA195FAE27D792B300CF27E2 /* LuCIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA195FAD27D792B300CF27E2 /* LuCIApp.swift */; };
@@ -104,6 +106,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		DA13E32B280E5EA400C8589C /* WatchSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSession.swift; sourceTree = "<group>"; };
 		DA15D63727D8E3AF002D3D58 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		DA195FAA27D792B300CF27E2 /* LuCI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LuCI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA195FAD27D792B300CF27E2 /* LuCIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuCIApp.swift; sourceTree = "<group>"; };
@@ -206,6 +209,7 @@
 				DA5249EB27F8388A00B65856 /* StatusView.swift */,
 				DA5249F627FAEE8100B65856 /* NetworkView.swift */,
 				DA553BCD280D0E3200F19FCC /* Extension.swift */,
+				DA13E32B280E5EA400C8589C /* WatchSession.swift */,
 				DA195FB127D792B500CF27E2 /* Assets.xcassets */,
 				DA195FB327D792B500CF27E2 /* Preview Content */,
 			);
@@ -506,6 +510,7 @@
 				DA8074F527F72BB500948B3D /* SSRView.swift in Sources */,
 				DA263B1F27FE0F0E009D1F6E /* Secrets.swift in Sources */,
 				DA5249F527FAEB8000B65856 /* IPInfo.swift in Sources */,
+				DA13E32C280E5EA400C8589C /* WatchSession.swift in Sources */,
 				DA8766D127EF43D7000C34C1 /* Error.swift in Sources */,
 				DA8766D327EF8146000C34C1 /* ShadowSocksR.swift in Sources */,
 				DA195FAE27D792B300CF27E2 /* LuCIApp.swift in Sources */,
@@ -517,6 +522,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA0D64B9280D8AE600787224 /* SSRView.swift in Sources */,
+				DA13E32D280E5EA400C8589C /* WatchSession.swift in Sources */,
 				DA0D64B8280D898900787224 /* NetworkView.swift in Sources */,
 				DA0D64B7280D846700787224 /* SettingsView.swift in Sources */,
 				DA553BE2280D767D00F19FCC /* Secrets.swift in Sources */,

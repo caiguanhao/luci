@@ -8,6 +8,10 @@
 import Foundation
 import SwiftUI
 
+#if os(watchOS)
+import WatchKit
+#endif
+
 #if os(iOS)
 import Introspect
 #endif
@@ -246,6 +250,11 @@ struct SettingsView: View {
                 }
                 .onMove { accounts.move(fromOffsets: $0, toOffset: $1) }
                 .onDelete { accounts.remove(atOffsets: $0); setCurrent() }
+
+                #if os(watchOS)
+                syncFromView
+                syncToView
+                #endif
             }
             .navigationTitle("Edit Accounts")
             #if os(iOS)
@@ -262,4 +271,99 @@ struct SettingsView: View {
             #endif
         })
     }
+
+    #if os(watchOS)
+    enum syncType { case none, from, to }
+    @State private var syncing = syncType.none
+    @State private var syncErrMsg: String?
+
+    var syncFromView: some View {
+        Button {
+            self.syncErrMsg = nil
+            self.syncing = .from
+            WatchSession.shared.activate({ (session, err) in
+                guard err == nil else {
+                    self.syncErrMsg = err
+                    self.syncing = .none
+                    return
+                }
+                session.sendMessage([
+                    "action": "getUserDefaults",
+                    "keys": [
+                        LuCI.STORAGE_ACCOUNTS,
+                        LuCI.STORAGE_CURRENT_ACCOUNT_ID,
+                    ].rawValue,
+                ], replyHandler: { ret in
+                    self.syncing = .none
+                    for (key, value) in ret {
+                        if key == "action" {
+                            continue
+                        }
+                        if let value = value as? String {
+                            UserDefaults.standard.set(value, forKey: key)
+                        }
+                    }
+                    WKInterfaceDevice.current().play(.success)
+                }, errorHandler: { error in
+                    self.syncing = .none
+                    self.syncErrMsg = error.localizedDescription
+                })
+            })
+        } label: {
+            HStack {
+                Text("Sync from iPhone").foregroundColor(.green)
+                if syncing == .from {
+                    Spacer()
+                    ProgressView()
+                        .frame(width: 20)
+                        .scaleEffect(0.5)
+                }
+            }
+        }.disabled(syncing != .none)
+    }
+
+    var syncToView: some View {
+        Button {
+            self.syncErrMsg = nil
+            self.syncing = .to
+            WatchSession.shared.activate({ (session, err) in
+                guard err == nil else {
+                    self.syncErrMsg = err
+                    self.syncing = .none
+                    return
+                }
+                session.sendMessage([
+                    "action": "setUserDefaults",
+                    LuCI.STORAGE_ACCOUNTS: accounts.rawValue,
+                    LuCI.STORAGE_CURRENT_ACCOUNT_ID: currentAccountId,
+                ], replyHandler: { ret in
+                    self.syncing = .none
+                    if let result = ret["result"] as? String, result != "SUCCESS" {
+                        self.syncErrMsg = "Failed to sync"
+                    } else {
+                        WKInterfaceDevice.current().play(.success)
+                    }
+                }, errorHandler: { error in
+                    self.syncing = .none
+                    self.syncErrMsg = error.localizedDescription
+                })
+            })
+        } label: {
+            HStack {
+                Text("Sync to iPhone").foregroundColor(.green)
+                if syncing == .to {
+                    Spacer()
+                    ProgressView()
+                        .frame(width: 20)
+                        .scaleEffect(0.5)
+                }
+            }
+        }.disabled(syncing != .none)
+            .alert(syncErrMsg ?? "Unknown error",
+                   isPresented: .init(get: { syncErrMsg != nil },
+                                      set: { if $0 == false { syncErrMsg = nil } })) {
+                Button("OK", role: .cancel) {}
+            }
+    }
+    #endif
 }
