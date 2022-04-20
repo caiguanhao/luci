@@ -27,7 +27,9 @@ extension API {
     }
 
     func SSR_getBasicSettings() async throws -> SSRSettings {
-        let response = try await self.mkRequest("/admin/services/shadowsocksr", redirect: false)
+        let response = try await self.mkRequest(
+            requestOptions(path: "/admin/services/shadowsocksr", redirect: false)
+        )
         return try await SSR_parseSettings(response)
     }
 
@@ -93,13 +95,19 @@ extension API {
             let value = setting.options[setting.selected].value
             data[setting.name] = value
         }
-        let response = try await self.mkRequest("/admin/services/shadowsocksr", method: .post, parameters: data, redirect: false)
+        let response = try await self.mkRequest(
+            requestOptions(path: "/admin/services/shadowsocksr",
+                           method: .post, parameters: data, redirect: false)
+        )
         return try await SSR_parseSettings(response)
     }
 
     func SSR_restart(token: String) async throws -> Bool {
         let data = [ "token": token ]
-        let response = try await self.mkRequest("/servicectl/restart/shadowsocksr", method: .post, parameters: data)
+        let response = try await self.mkRequest(
+            requestOptions(path: "/servicectl/restart/shadowsocksr",
+                           method: .post, parameters: data)
+        )
         return response == "OK"
     }
 
@@ -118,7 +126,9 @@ extension API {
     }
 
     func SSR_getServerNodes() async throws -> [Server] {
-        let response = try await self.mkRequest("/admin/services/shadowsocksr/servers", redirect: false)
+        let response = try await self.mkRequest(
+            requestOptions(path: "/admin/services/shadowsocksr/servers", redirect: false)
+        )
         let doc = try XMLDocument(string: response, encoding: .utf8)
         let rows = doc.css(".cbi-section-table-row")
         var servers = [Server]()
@@ -174,7 +184,7 @@ extension API {
             URLQueryItem(name: "tls", value: server.tls)
         ]
         let url = components.url?.absoluteString
-        return try await self.getRequest(url!, type: PingResult.self, timeout: 10)
+        return try await self.mkRequest(requestOptions(path: url!, timeout: 10), type: PingResult.self)
     }
 
     struct RunningResult: Codable {
@@ -182,7 +192,7 @@ extension API {
     }
 
     func SSR_checkIfRunning() async throws -> Bool {
-        let result = try await self.getRequest("/admin/services/shadowsocksr/run", type: RunningResult.self)
+        let result = try await self.mkRequest(requestOptions(path: "/admin/services/shadowsocksr/run"), type: RunningResult.self)
         return result.running
     }
 }

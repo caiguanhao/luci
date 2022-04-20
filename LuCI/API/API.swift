@@ -41,7 +41,10 @@ class API: Request {
     }
 
     override func urlAndHeaders(path: String) -> (String, HTTPHeaders?) {
-        return ("http://\(self.host)/cgi-bin/luci\(path)", HTTPHeaders([ "Cookie": "sysauth=\(self.auth ?? "")" ]))
+        return (
+            "http://\(self.host)/cgi-bin/luci\(path)",
+            HTTPHeaders([ "Cookie": "sysauth=\(self.auth ?? "")" ])
+        )
     }
 
     func login() async throws {
@@ -73,8 +76,10 @@ class API: Request {
         }
     }
 
+    private let logoutPath = "/admin/logout"
+
     func logout() async throws {
-        _ = try await mkRequest("/admin/logout", redirect: false)
+        _ = try await mkRequest(requestOptions(path: logoutPath, redirect: false))
     }
 
     struct StaticStatus {
@@ -88,7 +93,7 @@ class API: Request {
         if (self.staticStatus != nil) {
             return self.staticStatus!
         }
-        let response = try await mkRequest("/", redirect: false)
+        let response = try await mkRequest(requestOptions(path: "/", redirect: false))
         let doc = try XMLDocument(string: response, encoding: .utf8)
         let fieldsets = doc.css("fieldset")
         let tds = fieldsets[0].css("td")
@@ -110,7 +115,7 @@ class API: Request {
         if (self.staticStatus == nil) {
             self.staticStatus = try await getStaticStatus()
         }
-        return try await getRequest("/?status=1", type: Status.self)
+        return try await mkRequest(requestOptions(path: "/?status=1"), type: Status.self)
     }
 
     struct Status: Codable {
@@ -212,27 +217,38 @@ class API: Request {
         let disabled: Bool?
     }
 
-    internal func mkRequest(
-        _ path: String,
-        method: HTTPMethod = .get,
-        parameters: Parameters? = nil,
-        redirect: Bool = true,
-        timeout: Double = 5
-    ) async throws -> String {
-        return try await withCheckedThrowingContinuation { continuation in
-            self.newRequest(
-                path, method: method, parameters: parameters,
-                redirect: redirect, timeout: timeout
-            ).response { resp in
-                self.handleResponse(resp) { text in
-                    continuation.resume(returning: text)
-                } fail: { err in
-                    if case APIError.requestFailed(let code, _) = err, code == 403 {
-                        self.auth = nil
-                    }
-                    continuation.resume(throwing: err)
-                }
+    internal func mkRequest(_ opts: requestOptions) async throws -> String {
+        do {
+            return try await self.newRequest(opts)
+        } catch {
+            if isAuthExpired(error) && canRetry(opts) {
+                try await self.login()
+                return try await self.newRequest(opts)
             }
+            throw error
         }
+    }
+
+    internal func mkRequest<T: Decodable>(_ opts: requestOptions, type responseType: T.Type) async throws -> T {
+        do {
+            return try await self.newRequest(opts, type: responseType)
+        } catch {
+            if isAuthExpired(error) && canRetry(opts) {
+                try await self.login()
+                return try await self.newRequest(opts, type: responseType)
+            }
+            throw error
+        }
+    }
+
+    private func isAuthExpired(_ error: Error) -> Bool {
+        if case APIError.requestFailed(let code, _, _) = error, code == 403 {
+            return true
+        }
+        return false
+    }
+
+    private func canRetry(_ opts: requestOptions) -> Bool {
+        return opts.path != self.logoutPath
     }
 }

@@ -17,13 +17,13 @@ class IPAddress {
             let key = Secrets.ipgeolocationApiKey
             let url = "https://api.ipgeolocation.io/ipgeo?apiKey=\(key)"
             do {
-                return try await getRequest(url, type: ipgeolocationResponse.self, timeout: 5)
-            } catch APIError.requestFailed(let code, var response) {
+                return try await newRequest(requestOptions(path: url), type: ipgeolocationResponse.self)
+            } catch APIError.requestFailed(let code, var response, let afError) {
                 if response.count > 0 {
                     let resp = try JSONDecoder().decode([String: String].self, from: response.data(using: .utf8)!)
                     response = resp["message"] ?? response
                 }
-                throw APIError.requestFailed(code: code, response: response)
+                throw APIError.requestFailed(code: code, response: response, afError: afError)
             } catch let error {
                 throw error
             }

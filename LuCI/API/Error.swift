@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import Alamofire
 
 enum APIError: LocalizedError {
     case loginFailed(host: String, user: String, pass: String)
-    case requestFailed(code: Int, response: String)
+    case requestFailed(code: Int, response: String, afError: AFError?)
 }
 
 extension APIError {
@@ -18,11 +19,11 @@ extension APIError {
         case .loginFailed(host: let host, user: let user, pass: let pass):
             let masked = String(repeating: "•", count: max(0, pass.count-3)) + pass.suffix(3)
             return "login failed (host: \(host), user: \(user), pass: \(masked))"
-        case .requestFailed(code: let code, response: let response):
+        case .requestFailed(code: let code, response: let response, afError: let afError):
             let text = response.replacingOccurrences(of: "\n", with: " ")
             let size = 30
             let truncated = (text.count > size) ? text.prefix(size) + "…" : text
-            return "responded \(code) with \(truncated)"
+            return "responded \(code) with \(truncated), afError \(afError?.localizedDescription ?? "nil")"
         }
     }
 }

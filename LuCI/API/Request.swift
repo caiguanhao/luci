@@ -21,9 +21,47 @@ class Request {
         return Session(configuration: configuration)
     }()
 
-    internal func getRequest<T: Decodable>(_ path: String, type responseType: T.Type, timeout: Double = 5) async throws -> T {
+    internal func urlAndHeaders(path: String) -> (String, HTTPHeaders?) {
+        return (path, nil)
+    }
+
+    internal struct requestOptions {
+        var path: String
+        var method: HTTPMethod = .get
+        var parameters: Parameters? = nil
+        var redirect: Bool = true
+        var timeout: Double = 5
+    }
+
+    private func newRequest(_ opts: requestOptions) -> DataRequest {
+        let (url, headers) = self.urlAndHeaders(path: opts.path)
+        let req = manager.request(url,
+                                  method: opts.method,
+                                  parameters: opts.parameters,
+                                  headers: headers) {
+            $0.timeoutInterval = opts.timeout
+        }
+        if (opts.redirect == false) {
+            req.redirect(using: .doNotFollow)
+        }
+        return req
+    }
+
+    internal func newRequest(_ opts: requestOptions) async throws -> String {
         return try await withCheckedThrowingContinuation { continuation in
-            self.newRequest(path, timeout: timeout).responseDecodable(of: responseType) { resp in
+            self.newRequest(opts).response { resp in
+                self.handleResponse(resp) { text in
+                    continuation.resume(returning: text)
+                } fail: { err in
+                    continuation.resume(throwing: err)
+                }
+            }
+        }
+    }
+
+    internal func newRequest<T: Decodable>(_ opts: requestOptions, type responseType: T.Type) async throws -> T {
+        return try await withCheckedThrowingContinuation { continuation in
+            self.newRequest(opts).responseDecodable(of: responseType) { resp in
                 self.handleResponse(resp) { _ in
                     continuation.resume(returning: resp.value!)
                 } fail: { err in
@@ -33,36 +71,15 @@ class Request {
         }
     }
 
-    internal func urlAndHeaders(path: String) -> (String, HTTPHeaders?) {
-        return (path, nil)
-    }
-
-    internal func newRequest(
-        _ path: String,
-        method: HTTPMethod = .get,
-        parameters: Parameters? = nil,
-        redirect: Bool = true,
-        timeout: Double = 5
-    ) -> DataRequest {
-        let (url, headers) = self.urlAndHeaders(path: path)
-        let req = manager.request(url, method: method, parameters: parameters, headers: headers) {
-            $0.timeoutInterval = timeout
-        }
-        if (redirect == false) {
-            req.redirect(using: .doNotFollow)
-        }
-        return req
-    }
-
-    internal func handleResponse<T>(_ resp: AFDataResponse<T>, ok: (String) -> (), fail: (Error) -> ()) {
+    private func handleResponse<T>(_ resp: AFDataResponse<T>, ok: (String) -> (), fail: (Error) -> ()) {
         let code = resp.response?.statusCode ?? 0
         let res = resp.data != nil ? (String(data: resp.data!, encoding: .utf8) ?? "(nil)") : "(nil)"
         if (resp.error != nil) {
-            fail(resp.error!)
+            fail(APIError.requestFailed(code: code, response: res, afError: resp.error!))
         } else if (code == 200 || code == 204 || code == 301 || code == 302) {
             ok(res)
         } else {
-            fail(APIError.requestFailed(code: code, response: res))
+            fail(APIError.requestFailed(code: code, response: res, afError: nil))
         }
     }
 }
